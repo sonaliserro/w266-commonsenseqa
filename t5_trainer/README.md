@@ -3,8 +3,8 @@ pip install -r requirements.txt
 
 ### Configure wandb
 python
->>> import wandb
->>> wandb.login()
+import wandb
+wandb.login()
 
 ### Download the commomsense_qa dataset from transformers nlp
 python ./data_utils.py
