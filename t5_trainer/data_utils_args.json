@@ -1,0 +1,1 @@
+{"comment": "commonsense_qa:max_len:128, social_i_qa:max_len:256", "dataset_name": "commonsense_qa", "tokenizer_name_or_path": "t5-base", "max_len": 128, "target_max_len": 2}

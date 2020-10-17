@@ -1,4 +1,4 @@
-# Inspired from https://github.com/huggingface/transformers/blob/master/examples/multiple-choice/run_multiple_choice.py
+# Adapted from https://github.com/huggingface/transformers/blob/master/examples/
 import logging
 import os
 import sys
@@ -11,6 +11,8 @@ import numpy as np
 import torch
 
 import wandb
+
+import transformers
 
 from transformers import (
     HfArgumentParser,
@@ -25,9 +27,11 @@ from transformers import (
 
 logger = logging.getLogger(__name__)
 
-# log both gradients and parameters
-os.environ['WANDB_WATCH'] = 'all'
-os.environ['WANDB_PROJECT'] = 't5-hf-csqa'
+TRAIN_FILE = 'train_data.pt'
+VAL_FILE = 'valid_data.pt'    
+
+# Make the logging level as INFO
+transformers.logging.set_verbosity_info()
 
 @dataclass
 class ModelArguments:
@@ -50,22 +54,12 @@ class DataTrainingArguments:
     """
     Arguments pertaining to what data we are going to input our model for training and eval.
     """   
-    
-    train_file_path: Optional[str] = field(
-        default='./data/csqa/train_data.pt',
-        metadata={"help": "Path for cached train dataset"},
-    )
-    valid_file_path: Optional[str] = field(
-        default='./data/csqa/valid_data.pt',
-        metadata={"help": "Path for cached valid dataset"},
-    )
-    max_len: Optional[int] = field(
-        default = 256,
-        metadata = {"help": "Max input length for the source text"},
-    )
-    target_max_len: Optional[int] = field(
-        default = 16,
-        metadata = {"help": "Max input length for the target text"},
+    task_name: str = field(
+        metadata={"help": "Task name"},
+    )    
+    data_dir: Optional[str] = field(
+        default = './data',
+        metadata={"help": "Path for train and eval dataset(s)"}
     )
 
 @dataclass
@@ -97,7 +91,7 @@ def main():
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
 
     # Load the arguments from a json file
-    model_args, data_args, training_args = parser.parse_json_file(json_file=os.path.abspath('args.json'))
+    model_args, data_args, training_args = parser.parse_json_file(json_file=os.path.abspath('training_args.json'))
 
     if (
         os.path.exists(training_args.output_dir)
@@ -127,6 +121,10 @@ def main():
 
     # Set seed
     set_seed(training_args.seed)
+        
+    # Log both gradients and parameters in weights and biases
+    os.environ['WANDB_WATCH'] = 'all'
+    os.environ['WANDB_PROJECT'] = '_'.join(['t5_train', data_args.task_name])
 
     # Load pretrained model and tokenizer
     tokenizer = T5Tokenizer.from_pretrained(
@@ -139,8 +137,8 @@ def main():
     )
 
     # Load the train/eval dataset(s)
-    train_dataset = torch.load(data_args.train_file_path) if training_args.do_train else None
-    valid_dataset = torch.load(data_args.valid_file_path) if training_args.do_eval else None
+    train_dataset = torch.load(os.path.join(data_args.data_dir, data_args.task_name, TRAIN_FILE)) if training_args.do_train else None
+    valid_dataset = torch.load(os.path.join(data_args.data_dir, data_args.task_name, VAL_FILE)) if training_args.do_eval else None
     logger.info("Finished loading dataset(s)")
 
     # Initialize the Trainer
@@ -152,14 +150,11 @@ def main():
         data_collator = T2TDataCollator(),
         prediction_loss_only = True
     )
-
-    # Setup wandb
-    #trainer.setup_wandb()
     
     # Training
     if training_args.do_train:
         trainer.train(
-            model_path=model_args.model_name_or_path if os.path.isdir(model_args.model_name_or_path) else None
+            model_path = model_args.model_name_or_path if os.path.isdir(model_args.model_name_or_path) else None
         )
         trainer.save_model()
         # Also re-save the tokenizer to the same directory.
