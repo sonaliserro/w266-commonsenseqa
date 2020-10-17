@@ -1,4 +1,4 @@
-#### Steps to train T5 on the commonsense_qa dataset (using the huggingface transformer model using pytorch)
+#### Steps to train T5 on the [commonsense_qa,social_i_qa] dataset (using the huggingface transformer model using pytorch)
 
 1. Install packages
 
@@ -10,11 +10,11 @@ python
 >>> import wandb
 >>> wandb.login()
 ```
-3. Download the commomsense_qa dataset from the transformers nlp package. Formatted train and validation files torch files saved under ./data/csqa/
+3. Download the [commomsense_qa, social_i_qa] dataset from the transformers nlp package. Formatted train and validation files torch files saved under ./data/[dataset_name]/. Supply relevant arguments in the `data_utils_args.json` file.
 
 ```python ./data_utils.py```
 
-4. Train the t5 model using the configuration specified in args.json. Models and checkpoints saved under ./models
+4. Train the t5 model using the configuration specified in `training_args.json` file. Models and checkpoints saved under ./models/[task_name]
 
 ```python ./t5_train.py```
 
