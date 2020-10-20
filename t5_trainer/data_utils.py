@@ -30,6 +30,8 @@ tokenizer = T5Tokenizer.from_pretrained(arguments['tokenizer_name_or_path'])
 def format_example_commonsense_qa(example):
     options = ['%s: %s' % (i, option) for i, option in zip(example['choices']['label'], example['choices']['text'])]
     example['input_text'] = 'question: %s  options: %s' % (example['question'], ' '.join(options))
+    # Use the following format if you want the target to be the string answer, rather than the alphabetical choice
+    #example['target_text'] = '%s' % example['choices']['text'][example['choices']['label'].index(example['answerKey'])]
     example['target_text'] = '%s' % example['answerKey']
     return example
 

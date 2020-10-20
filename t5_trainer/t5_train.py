@@ -158,7 +158,7 @@ def main():
         )
         trainer.save_model()
         # Also re-save the tokenizer to the same directory.
-        if trainer.is_world_master():
+        if trainer.is_world_process_zero():
             tokenizer.save_pretrained(training_args.output_dir)
 
     # Evaluation
