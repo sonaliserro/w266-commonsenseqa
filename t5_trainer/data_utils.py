@@ -31,8 +31,8 @@ def format_example_commonsense_qa(example):
     options = ['%s: %s' % (i, option) for i, option in zip(example['choices']['label'], example['choices']['text'])]
     example['input_text'] = 'question: %s  options: %s' % (example['question'], ' '.join(options))
     # Use the following format if you want the target to be the string answer, rather than the alphabetical choice
-    #example['target_text'] = '%s' % example['choices']['text'][example['choices']['label'].index(example['answerKey'])]
-    example['target_text'] = '%s' % example['answerKey']
+    example['target_text'] = '%s: %s' % (example['answerKey'], example['choices']['text'][example['choices']['label'].index(example['answerKey'])])
+    #example['target_text'] = '%s' % example['answerKey']
     return example
 
 # Process the examples in input and target text format for the social_i_qa dataset
@@ -73,8 +73,8 @@ print('Getting data from nlp datasets')
 train_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.TRAIN)
 valid_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.VALIDATION)
         
-train_dataset = train_dataset.map(format_example)
-train_dataset = train_dataset.map(convert_to_features, batched = True)
+train_dataset = train_dataset.map(format_example ,load_from_cache_file = False)
+train_dataset = train_dataset.map(convert_to_features, batched = True, load_from_cache_file = False)
 
 valid_dataset = valid_dataset.map(format_example, load_from_cache_file = False)
 valid_dataset = valid_dataset.map(convert_to_features, batched = True, load_from_cache_file = False)
