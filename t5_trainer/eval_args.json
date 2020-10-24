@@ -1,1 +1,1 @@
-{"model_name_or_path": "./models/", "valid_file_path": "./data/valid_data.pt", "tokenizer_name_or_path": "./models", "max_target_length": 5}
+{"model_name_or_path": "./models/social_i_qa", "valid_file_path": "./data/social_i_qa/valid_data.pt", "tokenizer_name_or_path": "./models/social_i_qa", "max_target_length": 16}

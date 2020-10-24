@@ -7,6 +7,8 @@ import os
 
 from tqdm.auto import tqdm
 
+import transformers
+
 from transformers import (
     HfArgumentParser,
     DataCollator,
@@ -17,6 +19,9 @@ from transformers import (
 from sklearn import metrics
 
 logger = logging.getLogger(__name__)
+
+# Make the logging level as INFO
+transformers.logging.set_verbosity_info()
 
 @dataclass
 class EvalArguments:
@@ -54,14 +59,14 @@ def main():
     # Generate predictions
     predictions = []
     targets = []
-    model.to('cpu')
+    model.to(device)
     
     model.eval()
     with torch.no_grad():
         for batch in tqdm(dataloader):
             prediction = model.generate(
-                input_ids = batch['input_ids'].to('cpu'), 
-                attention_mask = batch['attention_mask'].to('cpu'),
+                input_ids = batch['input_ids'].to(device), 
+                attention_mask = batch['attention_mask'].to(device),
                 max_length = args.max_target_length
             )
 
@@ -71,8 +76,14 @@ def main():
             predictions.extend(prediction)
             targets.extend(target)
 
-    print("***** Accuracy *****")
-    print(metrics.accuracy_score(targets, predictions))
+    accuracy = metrics.accuracy_score(targets, predictions)
+    logger.info("*** Evaluating accuracy on dev dataset ***")
+    output_file = os.path.join(args.model_name_or_path, "eval_accuracy.txt")
+    with open(output_file, "w") as writer:
+        logger.info("***** Eval results *****")
+        logger.info("Accuracy = %f", accuracy)
+        writer.write("***** Eval results *****\n")
+        writer.write("Accuracy = %f\n" % accuracy)
 
 if __name__ == "__main__":
     main()

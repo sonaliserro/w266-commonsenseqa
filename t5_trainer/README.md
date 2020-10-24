@@ -5,11 +5,13 @@
 ```pip install -r requirements.txt```
 
 2. Configure wandb (You need to set up an account on https://wandb.ai/, and runs will be tracked under project-name `t5-hf-csqa`)
+
 ```
 python
 >>> import wandb
 >>> wandb.login()
 ```
+
 3. Download the [commomsense_qa, social_i_qa] dataset from the transformers nlp package. Formatted train and validation files torch files saved under ./data/[dataset_name]/. Supply relevant arguments in the `data_utils_args.json` file.
 
 ```python ./data_utils.py```
@@ -22,4 +24,8 @@ python
 
 ```tensorboard --logdir ./runs/```
 
-6. Evaluation notebook t5_eval.ipynb
+6. Evalaute accuracy of the fine-tuned model using the configuration specified in `eval_args.json` file.
+
+```python ./t5_eval.py```
+
+7. Evaluation notebook t5_eval.ipynb

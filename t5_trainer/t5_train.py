@@ -28,13 +28,12 @@ from transformers import (
 logger = logging.getLogger(__name__)
 
 TRAIN_FILE = 'train_data.pt'
-VAL_FILE = 'valid_data.pt'    
+VAL_FILE = 'valid_data.pt'
+
+TOKENIZER_PAD_TOKEN_ID = 0
 
 # Make the logging level as INFO
 transformers.logging.set_verbosity_info()
-
-def simple_accuracy(preds, labels):
-    return (preds == labels).mean()
 
 @dataclass
 class ModelArguments:
@@ -78,7 +77,7 @@ class T2TDataCollator:
         input_ids = torch.stack([example['input_ids'] for example in batch])
         labels = torch.stack([example['target_ids'] for example in batch])
         # Do not calculate loss for pad tokens. All labels set to -100 are ignored (masked). 
-        labels[labels[:, :] == tokenizer.pad_token_id] = -100
+        labels[labels[:, :] == TOKENIZER_PAD_TOKEN_ID] = -100
         attention_mask = torch.stack([example['attention_mask'] for example in batch])
         decoder_attention_mask = torch.stack([example['target_attention_mask'] for example in batch])        
 
@@ -139,11 +138,6 @@ def main():
         model_args.model_name_or_path,
         cache_dir = model_args.cache_dir,
     )
-    
-    # Calculate accuracy metric
-    def compute_metrics(p: EvalPrediction) -> Dict:
-        preds = np.argmax(p.predictions, axis=1)
-        return {"acc": simple_accuracy(preds, p.label_ids)}
 
     # Load the train/eval dataset(s)
     train_dataset = torch.load(os.path.join(data_args.data_dir, data_args.task_name, TRAIN_FILE)) if training_args.do_train else None
@@ -157,7 +151,6 @@ def main():
         train_dataset = train_dataset,
         eval_dataset = valid_dataset,
         data_collator = T2TDataCollator(),
-        #compute_metrics = compute_metrics
         prediction_loss_only = True
     )
     

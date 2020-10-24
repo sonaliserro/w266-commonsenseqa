@@ -5,12 +5,13 @@ import os
 import sys
 import json
 
+import transformers
 from transformers import T5Tokenizer
 
 TRAIN_FILE = 'train_data.pt'
 VAL_FILE = 'valid_data.pt'    
 
-SOCIAL_I_QA_LABEL_LOOKUP = {'1':'A', '2':'B', '3':'C'}
+#SOCIAL_I_QA_LABEL_LOOKUP = {'1':'A', '2':'B', '3':'C'}
 DATASET_NAMES = ['commonsense_qa', 'social_i_qa']
 
 # Read the arguments from the data_utils_args.json command line file
@@ -30,9 +31,11 @@ tokenizer = T5Tokenizer.from_pretrained(arguments['tokenizer_name_or_path'])
 def format_example_commonsense_qa(example):
     options = ['%s: %s' % (i, option) for i, option in zip(example['choices']['label'], example['choices']['text'])]
     example['input_text'] = 'question: %s  options: %s' % (example['question'], ' '.join(options))
+    
     # Use the following format if you want the target to be the string answer, rather than the alphabetical choice
     example['target_text'] = '%s: %s' % (example['answerKey'], example['choices']['text'][example['choices']['label'].index(example['answerKey'])])
     #example['target_text'] = '%s' % example['answerKey']
+    
     return example
 
 # Process the examples in input and target text format for the social_i_qa dataset
@@ -43,7 +46,12 @@ def format_example_social_i_qa(example):
     optionC = '%s: %s' % ('C', example['answerC'])
     options = ' '.join([optionA, optionB, optionC])
     example['input_text'] = 'question: %s context: %s options: %s' % (example['question'], example['context'], options)
-    example['target_text'] = '%s' % SOCIAL_I_QA_LABEL_LOOKUP.get(example['label'].replace('\n', ''))
+    
+    # Use the following format if you want the target to be the string answer, rather than the alphabetical choice
+    label = example['label'].replace('\n', '')
+    example['target_text'] = '%s' % optionA if label == '1' else optionB if label == '2' else optionC
+    #example['target_text'] = '%s' % SOCIAL_I_QA_LABEL_LOOKUP.get(example['label'].replace('\n', ''))
+    
     return example
 
 # Wrapper format_method to handle the different task(s).
@@ -73,7 +81,7 @@ print('Getting data from nlp datasets')
 train_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.TRAIN)
 valid_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.VALIDATION)
         
-train_dataset = train_dataset.map(format_example ,load_from_cache_file = False)
+train_dataset = train_dataset.map(format_example, load_from_cache_file = False)
 train_dataset = train_dataset.map(convert_to_features, batched = True, load_from_cache_file = False)
 
 valid_dataset = valid_dataset.map(format_example, load_from_cache_file = False)
