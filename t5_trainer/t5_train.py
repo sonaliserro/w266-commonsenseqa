@@ -88,7 +88,6 @@ class T2TDataCollator:
             'decoder_attention_mask': decoder_attention_mask
         }
 
-
 def main():
     # See all possible arguments in src/transformers/training_args.py
     parser = HfArgumentParser((ModelArguments, DataTrainingArguments, TrainingArguments))
@@ -147,6 +146,7 @@ def main():
     # Initialize the Trainer
     trainer = Trainer(
         model = model,
+        tokenizer = tokenizer,
         args = training_args,
         train_dataset = train_dataset,
         eval_dataset = valid_dataset,

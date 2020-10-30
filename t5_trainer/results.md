@@ -24,6 +24,21 @@ Note: T5-base model fine-tuned for 3 epochs for each run using the target format
 | 16            | 1e-4          | 61.26         |
 | 8             | 5e-5          | 59.00         |
 
+#### Fine-tuning beyond 3 epochs
+
+Note: T5-base model fine-tuned for each run using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`..
+
+| Epochs        | Steps 	| Accuracy      |
+| ------------- |:-------------:|:-------------:|
+| 3             | 912           | 62.40         |
+| -             | 912+500       | 62.73         |
+| -             | 912+100       | 62.89         |
+| -             | 912+1500      | 63.06         |
+| -             | 912+2000      | 64.29         |
+| 10            | 2128          | 64.12         |
+| -             | 2128+500      | 61.83         |
+| 13            | 2128+912      | 62.24         |
+
 ## social_i_qa dataset
 
 #### Effect of different types of target format on accuracy

@@ -12,7 +12,7 @@ TRAIN_FILE = 'train_data.pt'
 VAL_FILE = 'valid_data.pt'    
 
 #SOCIAL_I_QA_LABEL_LOOKUP = {'1':'A', '2':'B', '3':'C'}
-DATASET_NAMES = ['commonsense_qa', 'social_i_qa']
+DATASET_NAMES = ['commonsense_qa', 'social_i_qa', 'common_gen']
 
 # Read the arguments from the data_utils_args.json command line file
 arg_file = sys.argv[1] if len(sys.argv) == 2 and sys.argv[1].endswith('.json') else 'data_utils_args.json'
@@ -54,12 +54,22 @@ def format_example_social_i_qa(example):
     
     return example
 
+# Process the examples in input and target text format for the common_gen dataset
+# Note that the eos token is added by t5 tokenizer.
+def format_example_common_gen(example):
+    example['input_text'] = 'generate sentence: %s' % ' '.join(example['concepts'])
+    example['target_text'] = '%s' % example['target']
+
+    return example
+
 # Wrapper format_method to handle the different task(s).
 def format_example(example):
     if arguments['dataset_name'] == 'commonsense_qa':
         return format_example_commonsense_qa(example)
     elif arguments['dataset_name'] == 'social_i_qa':
         return format_example_social_i_qa(example)
+    elif arguments['dataset_name'] == 'common_gen':
+        return format_example_common_gen(example)
         
 # Tokenize the examples, using the supplied padding arguments
 def convert_to_features(example_batch):

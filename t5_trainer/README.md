@@ -29,3 +29,7 @@ python
 ```python ./t5_eval.py```
 
 7. Evaluation notebook t5_eval.ipynb
+
+8. Fine-tuned models and processed dataset(s) are uploaded to Google Storage under `gs://w266-commonsenseqa/models/T5/`. To download the T5-base model fine-tuned on commonsense_qa for 3 epochs run the following command,
+
+```gsutil cp gs://w266-commonsenseqa/models/T5/commonsense_qa/3_epochs/* .```

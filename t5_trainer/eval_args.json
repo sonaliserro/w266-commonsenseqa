@@ -1,1 +1,6 @@
-{"model_name_or_path": "./models/social_i_qa", "valid_file_path": "./data/social_i_qa/valid_data.pt", "tokenizer_name_or_path": "./models/social_i_qa", "max_target_length": 16}
+{
+	"model_name_or_path": "./models/commonsense_qa/13_epochs",
+	"valid_file_path": "./data/commonsense_qa/valid_data.pt",
+	"tokenizer_name_or_path": "./models/commonsense_qa/13_epochs",
+	"max_target_length": 10
+}
