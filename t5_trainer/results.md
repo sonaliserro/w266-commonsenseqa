@@ -52,3 +52,11 @@ Note: T5-base model fine-tuned for 2 epochs.
 | B: watch the animals eat  | 63.71         |
 | B                         | 65.86         |
 
+
+Note: T5-base model fine-tuned for 2 epochs for each run using the target format `B: watch the animals eat`.
+
+| Batch size    | Learning rate | Accuracy      |
+| ------------- |:-------------:|:-------------:|
+| 8             | 1e-4          | 63.56         |
+| 16            | 1e-4          | 63.15         |
+| 8             | 5e-5          |               |
