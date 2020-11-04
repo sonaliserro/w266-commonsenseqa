@@ -22,17 +22,17 @@ Note: T5-base model fine-tuned for 3 epochs for each run using the target format
 | ------------- |:-------------:|:-------------:|
 | 8             | 1e-4          | 62.40         |
 | 16            | 1e-4          | 61.26         |
-| 8             | 5e-5          | 59.00         |
+| 8             | 5e-5          | 59.37         |
 
 #### Fine-tuning beyond 3 epochs
 
 Note: T5-base model fine-tuned for each run using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`..
 
-| Epochs        | Steps 	| Accuracy      |
+| Epochs        | Steps         | Accuracy      |
 | ------------- |:-------------:|:-------------:|
 | 3             | 912           | 62.40         |
 | -             | 912+500       | 62.73         |
-| -             | 912+1000       | 62.89         |
+| -             | 912+1000      | 62.89         |
 | -             | 912+1500      | 63.06         |
 | -             | 912+2000      | 64.29         |
 | 10            | 2128          | 64.12         |
@@ -60,3 +60,16 @@ Note: T5-base model fine-tuned for 2 epochs for each run using the target format
 | 8             | 1e-4          | 63.56         |
 | 16            | 1e-4          | 63.15         |
 | 8             | 5e-5          |               |
+
+## Sample Efficiency
+
+#### Effect of different fractions of training data on Accuracy
+
+Note: T5-base model fine-tuned for 10 epochs, using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`.
+
+`question: What will Robin want to do next? context: Robin left food out for the animals in her backyard to come and enjoy. options: A: chase the animals away B: watch the animals eat C: go out in the backyard`
+
+| Model         | 20%    | 40%    | 60%    | 80%    | 100%   |
+| --------------|:------:|:------:|:------:|:------:|:------:|
+| T5-base       | 56.67  | 59.95  | 61.26  | 62.40  | 64.12  |
+

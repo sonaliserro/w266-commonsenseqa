@@ -1,18 +1,18 @@
 {
 	"num_cores": 8,
 	"training_script": "t5_train.py",
-	"model_name_or_path": "./models/commonsense_qa/10_epochs",
+	"model_name_or_path": "t5-base",
 	"task_name": "commonsense_qa",
-	"output_dir": "./models/commonsense_qa/13_epochs",
+	"output_dir": "./models/commonsense_qa/100_percent",
 	"overwrite_output_dir": false,
 	"per_device_train_batch_size": 8,
 	"per_device_eval_batch_size": 8,
 	"gradient_accumulation_steps": 4,
 	"learning_rate": 0.0001,
-	"num_train_epochs": 3,
+	"num_train_epochs": 10,
 	"do_train": true,
 	"do_eval": true,
 	"evaluate_during_training": true,
 	"logging_steps": 200,
-	"save_steps": 500
+	"save_steps": 1000
 }

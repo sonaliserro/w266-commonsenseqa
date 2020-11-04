@@ -88,6 +88,10 @@ def convert_to_features(example_batch):
     return encodings
 
 print('Getting data from nlp datasets')
+# Use the following to load only 10% of data for sample efficiency tests
+#train_dataset = nlp.load_dataset(arguments['dataset_name'], split = 'train[:10%]')
+#valid_dataset = nlp.load_dataset(arguments['dataset_name'], split = 'validation[:10%]')
+
 train_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.TRAIN)
 valid_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.VALIDATION)
         

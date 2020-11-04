@@ -37,31 +37,31 @@ transformers.logging.set_verbosity_info()
 
 @dataclass
 class ModelArguments:
-    """
+    '''
     Arguments pertaining to which model/config/tokenizer we are going to fine-tune from.
-    """
+    '''
 
     model_name_or_path: str = field(
-        metadata = {"help": "Path to pretrained model or model identifier from huggingface.co/models"}
+        metadata = {'help': 'Path to pretrained model or model identifier from huggingface.co/models'}
     )
     tokenizer_name: Optional[str] = field(
-        default = None, metadata = {"help": "Pretrained tokenizer name or path if not the same as model_name"}
+        default = None, metadata = {'help': 'Pretrained tokenizer name or path if not the same as model_name'}
     )
     cache_dir: Optional[str] = field(
-        default = None, metadata = {"help": "Where do you want to store the pretrained models downloaded from s3"}
+        default = None, metadata = {'help': 'Where do you want to store the pretrained models downloaded from s3'}
     )
         
 @dataclass
 class DataTrainingArguments:
-    """
+    '''
     Arguments pertaining to what data we are going to input our model for training and eval.
-    """   
+    '''   
     task_name: str = field(
-        metadata={"help": "Task name"},
+        metadata={'help': 'Task name'},
     )    
     data_dir: Optional[str] = field(
         default = './data',
-        metadata={"help": "Path for train and eval dataset(s)"}
+        metadata={'help': 'Path for train and eval dataset(s)'}
     )
 
 @dataclass
@@ -69,11 +69,11 @@ class T2TDataCollator:
     # prepares lm_labels from target_ids, returns examples with keys as expected by the forward method
     # this is necessacry because the trainer directly passes this dict as arguments to the model.
     def __call__(self, batch: List) -> Dict[str, torch.Tensor]:
-        """
+        '''
         Take a list of samples from a Dataset and collate them into a batch.
         Returns:
             A dictionary of tensors
-        """
+        '''
         input_ids = torch.stack([example['input_ids'] for example in batch])
         labels = torch.stack([example['target_ids'] for example in batch])
         # Do not calculate loss for pad tokens. All labels set to -100 are ignored (masked). 
@@ -102,31 +102,31 @@ def main():
         and not training_args.overwrite_output_dir
     ):
         raise ValueError(
-            f"Output directory ({training_args.output_dir}) already exists and is not empty. Use --overwrite_output_dir to overcome."
+            f'Output directory ({training_args.output_dir}) already exists and is not empty. Use --overwrite_output_dir to overcome.'
         )
 
     # Setup logging
     logging.basicConfig(
-        format = "%(asctime)s - %(levelname)s - %(name)s -   %(message)s",
-        datefmt = "%m/%d/%Y %H:%M:%S",
+        format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
+        datefmt = '%m/%d/%Y %H:%M:%S',
         level = logging.INFO if training_args.local_rank in [-1, 0] else logging.WARN,
     )
     logger.warning(
-        "Process rank: %s, device: %s, n_gpu: %s, distributed training: %s, 16-bits training: %s",
+        'Process rank: %s, device: %s, n_gpu: %s, distributed training: %s, 16-bits training: %s',
         training_args.local_rank,
         training_args.device,
         training_args.n_gpu,
         bool(training_args.local_rank != -1),
         training_args.fp16,
     )
-    logger.info("Training/evaluation parameters %s", training_args)
+    logger.info('Training/evaluation parameters %s', training_args)
 
     # Set seed
     set_seed(training_args.seed)
         
     # Log both gradients and parameters in weights and biases
     os.environ['WANDB_WATCH'] = 'all'
-    os.environ['WANDB_PROJECT'] = '_'.join(['t5_train', data_args.task_name])
+    os.environ['WANDB_PROJECT'] = '_'.join(['t5_base_train', data_args.task_name])
 
     # Load pretrained model and tokenizer
     tokenizer = T5Tokenizer.from_pretrained(
@@ -141,7 +141,7 @@ def main():
     # Load the train/eval dataset(s)
     train_dataset = torch.load(os.path.join(data_args.data_dir, data_args.task_name, TRAIN_FILE)) if training_args.do_train else None
     valid_dataset = torch.load(os.path.join(data_args.data_dir, data_args.task_name, VAL_FILE)) if training_args.do_eval else None
-    logger.info("Finished loading dataset(s)")
+    logger.info('Finished loading dataset(s)')
 
     # Initialize the Trainer
     trainer = Trainer(
@@ -167,20 +167,20 @@ def main():
     # Evaluation
     results = {}
     if training_args.do_eval and training_args.local_rank in [-1, 0]:
-        logger.info("*** Evaluate ***")
+        logger.info('*** Evaluate ***')
 
         eval_output = trainer.evaluate()
 
-        output_eval_file = os.path.join(training_args.output_dir, "eval_results.txt")
-        with open(output_eval_file, "w") as writer:
-            logger.info("***** Eval results *****")
+        output_eval_file = os.path.join(training_args.output_dir, 'eval_results.txt')
+        with open(output_eval_file, 'w') as writer:
+            logger.info('***** Eval results *****')
             for key in sorted(eval_output.keys()):
-                logger.info("  %s = %s", key, str(eval_output[key]))
-                writer.write("%s = %s\n" % (key, str(eval_output[key])))
+                logger.info('  %s = %s', key, str(eval_output[key]))
+                writer.write('%s = %s\n' % (key, str(eval_output[key])))
     
         results.update(eval_output)
     
     return results
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
