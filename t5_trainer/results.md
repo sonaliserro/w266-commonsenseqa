@@ -63,6 +63,14 @@ Note: T5-base model fine-tuned for 2 epochs for each run using the target format
 | 8             | 2e-5          | 57.98         |
 | 4             | 1e-4          | 65.35         |
 
+Keeping the batch size at 4 and learning rate at 1e-4, I tried a few differente pochs.
+
+|Epochs        | Batch size    | Learning rate | Accuracy      |
+| -------------| ------------- |:-------------:|:-------------:|
+|2             | 4             | 1e-4          | 65.35         |
+|3             | 4             | 1e-4          | 65.51         |
+|4             | 4             | 1e-4          | 64.53         |
+
 
 ## Sample Efficiency
 
