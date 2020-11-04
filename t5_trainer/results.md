@@ -59,7 +59,8 @@ Note: T5-base model fine-tuned for 2 epochs for each run using the target format
 | ------------- |:-------------:|:-------------:|
 | 8             | 1e-4          | 63.56         |
 | 16            | 1e-4          | 63.15         |
-| 8             | 5e-5          |               |
+| 8             | 5e-5          | 61.67         |
+| 8             | 2e-5          | 57.98         |
 
 ## Sample Efficiency
 
@@ -67,9 +68,6 @@ Note: T5-base model fine-tuned for 2 epochs for each run using the target format
 
 Note: T5-base model fine-tuned for 10 epochs, using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`.
 
-`question: What will Robin want to do next? context: Robin left food out for the animals in her backyard to come and enjoy. options: A: chase the animals away B: watch the animals eat C: go out in the backyard`
-
 | Model         | 20%    | 40%    | 60%    | 80%    | 100%   |
 | --------------|:------:|:------:|:------:|:------:|:------:|
 | T5-base       | 56.67  | 59.95  | 61.26  | 62.40  | 64.12  |
-
