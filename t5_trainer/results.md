@@ -22,17 +22,17 @@ Note: T5-base model fine-tuned for 3 epochs for each run using the target format
 | ------------- |:-------------:|:-------------:|
 | 8             | 1e-4          | 62.40         |
 | 16            | 1e-4          | 61.26         |
-| 8             | 5e-5          | 59.00         |
+| 8             | 5e-5          | 59.37         |
 
 #### Fine-tuning beyond 3 epochs
 
 Note: T5-base model fine-tuned for each run using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`..
 
-| Epochs        | Steps 	| Accuracy      |
+| Epochs        | Steps         | Accuracy      |
 | ------------- |:-------------:|:-------------:|
 | 3             | 912           | 62.40         |
 | -             | 912+500       | 62.73         |
-| -             | 912+1000       | 62.89         |
+| -             | 912+1000      | 62.89         |
 | -             | 912+1500      | 63.06         |
 | -             | 912+2000      | 64.29         |
 | 10            | 2128          | 64.12         |
@@ -52,3 +52,33 @@ Note: T5-base model fine-tuned for 2 epochs.
 | B: watch the animals eat  | 63.71         |
 | B                         | 65.86         |
 
+
+Note: T5-base model fine-tuned for 2 epochs for each run using the target format `B: watch the animals eat`.
+
+| Batch size    | Learning rate | Accuracy      |
+| ------------- |:-------------:|:-------------:|
+| 8             | 1e-4          | 63.56         |
+| 16            | 1e-4          | 63.15         |
+| 8             | 5e-5          | 61.67         |
+| 8             | 2e-5          | 57.98         |
+| 4             | 1e-4          | 65.35         |
+
+Keeping the batch size at 4 and learning rate at 1e-4, I tried a few differente pochs.
+
+|Epochs        | Batch size    | Learning rate | Accuracy      |
+| -------------| ------------- |:-------------:|:-------------:|
+|2             | 4             | 1e-4          | 65.35         |
+|3             | 4             | 1e-4          | 65.51         |
+|4             | 4             | 1e-4          | 64.53         |
+|5             | 4             | 1e-4          | 63.61         |
+
+
+## Sample Efficiency
+
+#### Effect of different fractions of training data on Accuracy
+
+Note: T5-base model fine-tuned for 10 epochs, using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`.
+
+| Model         | 20%    | 40%    | 60%    | 80%    | 100%   |
+| --------------|:------:|:------:|:------:|:------:|:------:|
+| T5-base       | 56.67  | 59.95  | 61.26  | 62.40  | 64.12  |
