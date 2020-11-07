@@ -71,6 +71,8 @@ Keeping the batch size at 4 and learning rate at 1e-4, I tried a few differente 
 |3             | 4             | 1e-4          | 65.51         |
 |4             | 4             | 1e-4          | 64.53         |
 |5             | 4             | 1e-4          | 63.61         |
+|4 (non-stop)  | 4             | 2e-5          | 38.82         |
+|4 (non-stop)  | 8             | 1e-4          | 40.13         |
 
 
 ## Sample Efficiency
