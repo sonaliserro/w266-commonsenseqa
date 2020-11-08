@@ -55,13 +55,13 @@ Note: T5-base model fine-tuned for 2 epochs.
 
 Note: T5-base model fine-tuned for 2 epochs for each run using the target format `B: watch the animals eat`.
 
-| Batch size    | Learning rate | Accuracy      |
-| ------------- |:-------------:|:-------------:|
-| 8             | 1e-4          | 63.56         |
-| 16            | 1e-4          | 63.15         |
-| 8             | 5e-5          | 61.67         |
-| 8             | 2e-5          | 57.98         |
-| 4             | 1e-4          | 65.35         |
+|Epochs         | Batch size    | Learning rate | Accuracy      |
+| ------------- | ------------- |:-------------:|:-------------:|
+|2              | 8             | 1e-4          | 63.56         |
+|2              | 16            | 1e-4          | 63.15         |
+|2              | 8             | 5e-5          | 61.67         |
+|2              | 8             | 2e-5          | 57.98         |
+|2              | 4             | 1e-4          | 65.35         |
 
 Keeping the batch size at 4 and learning rate at 1e-4, I tried a few differente pochs.
 
@@ -80,12 +80,22 @@ Take the T5 model trained on social_i_qa. Fine-tune the model on commonsense_qa 
 
 | siqa epochs  | siqa Batch size| siqa learning rate | siqa Accuracy | csqa finetune epochs | csqa Accuracy |
 | -------------| -------------- |:------------------:|:-------------:| :-------------------:|:-------------:|
+|2             | 8              | 1e-4               | 63.56         | 0                    | 38.41         |
+|2             | 8              | 1e-4               | 63.56         | 1                    | 59.87         |
+|2             | 8              | 1e-4               | 63.56         | 2 (non-stop)         | 61.51         |
+|2             | 8              | 1e-4               | 63.56         | 3 (non-stop)         | 61.18         |
 |2             | 4              | 1e-4               | 65.35         | 0                    | 37.18         |
+|2             | 4              | 1e-4               | 65.35         | 1                    |               |
+|2             | 4              | 1e-4               | 65.35         | 2                    |               |
+|2             | 4              | 1e-4               | 65.35         | 3                    |               |
 |3             | 4              | 1e-4               | 65.51         | 0                    | 38.00         |
 |4             | 4              | 1e-4               | 64.53         | 0                    | 39.89         |
 |5             | 4              | 1e-4               | 63.61         | 0                    | 38.98         |
 |4 (non-stop)  | 4              | 2e-5               | 63.15         | 0                    | 38.82         |
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 0                    | 40.13         |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 1                    |               |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (non-stop)         |               |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 3 (non-stop)         |               |
 
 
 #### Effect of different types of target format on accuracy
