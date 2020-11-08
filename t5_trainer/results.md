@@ -71,9 +71,24 @@ Keeping the batch size at 4 and learning rate at 1e-4, I tried a few differente 
 |3             | 4             | 1e-4          | 65.51         |
 |4             | 4             | 1e-4          | 64.53         |
 |5             | 4             | 1e-4          | 63.61         |
-|4 (non-stop)  | 4             | 2e-5          | 38.82         |
-|4 (non-stop)  | 8             | 1e-4          | 40.13         |
+|4 (non-stop)  | 4             | 2e-5          | 63.15         |
+|4 (non-stop)  | 8             | 1e-4          | 66.58         |
 
+## Transfer Learning: Trained on social_i_qa, finetuned on commonsense_qa
+
+Take the T5 model trained on social_i_qa. Fine-tune the model on commonsense_qa and record accuracies.
+
+| siqa epochs  | siqa Batch size| siqa learning rate | siqa Accuracy | csqa finetune epochs | csqa Accuracy |
+| -------------| -------------- |:------------------:|:-------------:| :-------------------:|:-------------:|
+|2             | 4              | 1e-4               | 65.35         | 0                    | 37.18         |
+|3             | 4              | 1e-4               | 65.51         | 0                    | 38.00         |
+|4             | 4              | 1e-4               | 64.53         | 0                    | 39.89         |
+|5             | 4              | 1e-4               | 63.61         | 0                    | 38.98         |
+|4 (non-stop)  | 4              | 2e-5               | 63.15         | 0                    | 38.82         |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 0                    | 40.13         |
+
+
+#### Effect of different types of target format on accuracy
 
 ## Sample Efficiency
 
