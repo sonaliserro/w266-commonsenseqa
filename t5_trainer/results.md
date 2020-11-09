@@ -65,14 +65,17 @@ Note: T5-base model fine-tuned for 2 epochs for each run using the target format
 
 Keeping the batch size at 4 and learning rate at 1e-4, I tried a few differente pochs.
 
-|Epochs        | Batch size    | Learning rate | Accuracy      |
-| -------------| ------------- |:-------------:|:-------------:|
-|2             | 4             | 1e-4          | 65.35         |
-|3             | 4             | 1e-4          | 65.51         |
-|4             | 4             | 1e-4          | 64.53         |
-|5             | 4             | 1e-4          | 63.61         |
-|4 (non-stop)  | 4             | 2e-5          | 63.15         |
-|4 (non-stop)  | 8             | 1e-4          | 66.58         |
+|Epochs        | Batch size    | Checkpoint    | Learning rate | Accuracy      |
+| -------------| ------------- |:-------------:|:-------------:|:-------------:|
+|2             | 4             |(Final)        | 1e-4          | 65.35         |
+|3             | 4             |(Final)        | 1e-4          | 65.51         |
+|4             | 4             |(Final)        | 1e-4          | 64.53         |
+|5             | 4             |(Final)        | 1e-4          | 63.61         |
+|4 (non-stop)  | 4             |(Final)        | 2e-5          | 63.15         |
+|4 (non-stop)  | 8             |1,200          | 1e-4          | 63.25         |
+|4 (non-stop)  | 8             |2,400          | 1e-4          | 66.63         |
+|4 (non-stop)  | 8             |3,600          | 1e-4          | 66.22         |
+|4 (non-stop)  | 8             |(Final)        | 1e-4          | 66.58         |
 
 ## Transfer Learning: Trained on social_i_qa, finetuned on commonsense_qa
 
@@ -85,16 +88,16 @@ Take the T5 model trained on social_i_qa. Fine-tune the model on commonsense_qa 
 |2             | 8              | 1e-4               | 63.56         | 2 (non-stop)         | 61.51         |
 |2             | 8              | 1e-4               | 63.56         | 3 (non-stop)         | 61.18         |
 |2             | 4              | 1e-4               | 65.35         | 0                    | 37.18         |
-|2             | 4              | 1e-4               | 65.35         | 1                    |               |
-|2             | 4              | 1e-4               | 65.35         | 2                    |               |
-|2             | 4              | 1e-4               | 65.35         | 3                    |               |
 |3             | 4              | 1e-4               | 65.51         | 0                    | 38.00         |
 |4             | 4              | 1e-4               | 64.53         | 0                    | 39.89         |
 |5             | 4              | 1e-4               | 63.61         | 0                    | 38.98         |
 |4 (non-stop)  | 4              | 2e-5               | 63.15         | 0                    | 38.82         |
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 0                    | 40.13         |
-|4 (non-stop)  | 8              | 1e-4               | 66.58         | 1                    |               |
-|4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (non-stop)         |               |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 1                    | 58.55         |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (100 steps)        | 54.14         |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (300 steps)        | 59.54         |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (500 steps)        | 61.18         |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (final)            | 60.69         |
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 3 (non-stop)         |               |
 
 
