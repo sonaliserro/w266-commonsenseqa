@@ -23,10 +23,11 @@ Note: T5-base model fine-tuned for 3 epochs for each run using the target format
 | 8             | 1e-4          | 62.40         |
 | 16            | 1e-4          | 61.26         |
 | 8             | 5e-5          | 59.37         |
+| 4             | 1e-4          | 61.58         |
 
 #### Fine-tuning beyond 3 epochs
 
-Note: T5-base model fine-tuned for each run using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`..
+Note: T5-base model fine-tuned for each run using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`. Picked up training from the model weights saved from the 3 epoch run.
 
 | Epochs        | Steps         | Accuracy      |
 | ------------- |:-------------:|:-------------:|
@@ -38,6 +39,19 @@ Note: T5-base model fine-tuned for each run using the target format `A: bank` an
 | 10            | 2128          | 64.12         |
 | -             | 2128+500      | 61.83         |
 | 13            | 2128+912      | 62.24         |
+
+Note: T5-base model fine-tuned using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`. Non-stop run from T5-base.
+
+| Epochs        | Steps         | Accuracy      |
+| ------------- |:-------------:|:-------------:|
+| -             | 1000          | 62.24         |
+| -             | 2000          | 62.16         |
+| -             | 3000          | 62.89         |
+| -             | 4000          | 61.67         |
+| -             | 5000          | 61.75         |
+| -             | 6000          | 62.32         |
+| 20            | 6088          | 62.24         |
+
 
 ## social_i_qa dataset
 
@@ -109,6 +123,8 @@ Take the T5 model trained on social_i_qa. Fine-tune the model on commonsense_qa 
 
 Note: T5-base model fine-tuned for 10 epochs, using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`.
 
-| Model         | 20%    | 40%    | 60%    | 80%    | 100%   |
-| --------------|:------:|:------:|:------:|:------:|:------:|
-| T5-base       | 56.67  | 59.95  | 61.26  | 62.40  | 64.12  |
+| Model              | 20%    | 40%    | 60%    | 80%    | 100%   |
+| -------------------|:------:|:------:|:------:|:------:|:------:|
+| T5-base            | 56.67  | 59.95  | 61.26  | 62.40  | 62.65  |
+| T5-base-common_gen | 53.89  |        |        |        | 61.75  |
+| T5-base-socialiqa  |        |        |        |        |        |
