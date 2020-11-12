@@ -114,6 +114,7 @@ Take the T5 model trained on social_i_qa. Fine-tune the model on commonsense_qa 
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (final)            | 60.69         |
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 3 (non-stop)         | 61.59         |
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 10(non-stop)         | 61.75         |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 10(3 then 7)         | 62.82         |
 
 ### Warmup Steps
 
