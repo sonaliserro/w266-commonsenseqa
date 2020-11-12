@@ -122,9 +122,8 @@ Working on a model trained on social iqa (4 epochs non-stop, batch 8, lr 1e-4)
 | Warmup Steps  | csqa finetune epochs | csqa Accuracy |
 |:-------------:| :-------------------:|:-------------:|
 | 100           | 1                    | 59.71         |
-| 200           | 1 (out of 3 nonstop) |          |
-| 200           | 2 (out of 3 nonstop) |          |
 | 200           | 3 (out of 3 nonstop) | 62.00         |
+| 1,500         | 10                   | 61.75         |
 
 
 #### Effect of different types of target format on accuracy
