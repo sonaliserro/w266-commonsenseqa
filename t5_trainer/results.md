@@ -112,7 +112,19 @@ Take the T5 model trained on social_i_qa. Fine-tune the model on commonsense_qa 
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (300 steps)        | 59.54         |
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (500 steps)        | 61.18         |
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (final)            | 60.69         |
-|4 (non-stop)  | 8              | 1e-4               | 66.58         | 3 (non-stop)         |               |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 3 (non-stop)         | 61.59         |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 10(non-stop)         | 61.75         |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 10(3 then 7)         | 62.82         |
+
+### Warmup Steps
+
+Working on a model trained on social iqa (4 epochs non-stop, batch 8, lr 1e-4)
+
+| Warmup Steps  | csqa finetune epochs | csqa Accuracy |
+|:-------------:| :-------------------:|:-------------:|
+| 100           | 1                    | 59.71         |
+| 200           | 3 (out of 3 nonstop) | 62.00         |
+| 1,500         | 10                   | 61.75         |
 
 
 #### Effect of different types of target format on accuracy
