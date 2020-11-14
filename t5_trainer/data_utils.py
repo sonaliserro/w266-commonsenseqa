@@ -12,7 +12,7 @@ TRAIN_FILE = 'train_data.pt'
 VAL_FILE = 'valid_data.pt'    
 
 #SOCIAL_I_QA_LABEL_LOOKUP = {'1':'A', '2':'B', '3':'C'}
-DATASET_NAMES = ['commonsense_qa', 'social_i_qa', 'common_gen']
+DATASET_NAMES = ['commonsense_qa', 'social_i_qa', 'common_gen', 'cosmos_qa']
 
 # Read the arguments from the data_utils_args.json command line file
 arg_file = sys.argv[1] if len(sys.argv) == 2 and sys.argv[1].endswith('.json') else 'data_utils_args.json'
@@ -62,6 +62,21 @@ def format_example_common_gen(example):
 
     return example
 
+def format_example_cosmos_qa(example):
+    option_dict = {   0: '%s: %s' % ('A', example['answer0'])
+                    , 1: '%s: %s' % ('B', example['answer1'])
+                    , 2: '%s: %s' % ('C', example['answer2'])
+                    , 3: '%s: %s' % ('D', example['answer3'])}
+    options = " ".join(option_dict.values())
+
+    example['input_text'] = 'question: %s context: %s options: %s' % (example['question'], example['context'], options)
+
+    label = example['label']
+    example['target_text'] = option_dict[label]
+    
+    return example
+
+
 # Wrapper format_method to handle the different task(s).
 def format_example(example):
     if arguments['dataset_name'] == 'commonsense_qa':
@@ -70,6 +85,8 @@ def format_example(example):
         return format_example_social_i_qa(example)
     elif arguments['dataset_name'] == 'common_gen':
         return format_example_common_gen(example)
+    elif arguments['dataset_name'] == 'cosmos_qa':
+        return format_example_cosmos_qa(example)
         
 # Tokenize the examples, using the supplied padding arguments
 def convert_to_features(example_batch):
