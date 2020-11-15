@@ -133,6 +133,14 @@ Working on a model trained on social iqa (4 epochs non-stop, batch 8, lr 1e-4)
 | 1,500         | 10                   | 61.75         |
 
 
+## cosmos_qa dataset
+
+
+|Epochs         | Target Format             | Batch size    | Learning rate | Accuracy      |
+| ------------- | --------------------------| ------------- |:-------------:|:-------------:|
+|3              | B: watch the animals eat  | 8             | 1e-4          | 66.53         |
+
+
 #### Effect of different types of target format on accuracy
 
 ## Sample Efficiency
