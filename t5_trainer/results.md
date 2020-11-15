@@ -140,6 +140,12 @@ Working on a model trained on social iqa (4 epochs non-stop, batch 8, lr 1e-4)
 | ------------- | --------------------------| ------------- |:-------------:|:-------------:|
 |3              | B: watch the animals eat  | 8             | 1e-4          | 66.53         |
 
+### transfer learning
+
+|Cosmos Epochs  | Batch size    | Learning rate | Cosmos Accuracy | Commonsense Epochs | Commonsense Accuracy | 
+| ------------- | ------------- |:-------------:|:---------------:| :-----------------:| :-------------------:|
+|3              | 8             | 1e-4          | 66.53           | 10                 |   61.43              |
+
 
 #### Effect of different types of target format on accuracy
 
