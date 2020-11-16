@@ -142,9 +142,28 @@ Working on a model trained on social iqa (4 epochs non-stop, batch 8, lr 1e-4)
 
 ### transfer learning
 
-|Cosmos Epochs  | Batch size    | Learning rate | Cosmos Accuracy | Commonsense Epochs | Commonsense Accuracy | 
-| ------------- | ------------- |:-------------:|:---------------:| :-----------------:| :-------------------:|
-|3              | 8             | 1e-4          | 66.53           | 10                 |   61.43              |
+Batch size 8
+
+|Cosmos Epochs| Batch size| LR   | Cosmos Accuracy | Commonsense Epochs | Commonsense LR | Commonsense Accuracy | 
+| ------------| --------- |:----:|:---------------:| :-----------------:| :-------------:| :-------------------:|
+|3            | 8         | 1e-4 | 66.53           | 10                 | 1e-4           |  61.43               |
+|3            | 8         | 1e-4 | 66.53           | 10                 | 5e-5           |  62.82               |
+
+Since we achieved a higher accuracy than baseline for commonsense-over-Cosmos, we looked at how this accuracy changed over different checkpoints. Below is the table for finetuning Commonsense QA with LR = 5e-5, batch size 8, for 10 epochs.
+
+Accuracy| Task  | Dir | Model | TS |
+|---|---| ---| --- | ---| ---  | --- | --- |
+| 0.552007| commonsense_qa| cs_on_cosmos|300| Sun Nov 15 23:13:18 PST 2020 |
+| 0.597052| commonsense_qa| cs_on_cosmos|600| Sun Nov 15 23:13:18 PST 2020 |
+| 0.609337| commonsense_qa| cs_on_cosmos|900| Sun Nov 15 23:13:18 PST 2020 |
+| 0.615889| commonsense_qa| cs_on_cosmos|1200| Sun Nov 15 23:13:18 PST 2020 |
+| 0.624079| commonsense_qa| cs_on_cosmos|1500| Sun Nov 15 23:13:18 PST 2020 |
+| 0.628174| commonsense_qa| cs_on_cosmos|1800| Sun Nov 15 23:13:18 PST 2020 |
+| 0.624898| commonsense_qa| cs_on_cosmos|2100| Sun Nov 15 23:13:18 PST 2020 |
+| 0.628993| commonsense_qa| cs_on_cosmos|2400| Sun Nov 15 23:13:18 PST 2020 |
+| 0.630631| commonsense_qa| cs_on_cosmos|2700| Sun Nov 15 23:13:18 PST 2020 |
+| 0.627355| commonsense_qa| cs_on_cosmos|3000| Sun Nov 15 23:13:18 PST 2020 |
+| 0.628174| commonsense_qa| cs_on_cosmos|End of 10 epochs| Sun Nov 15 23:13:18 PST 2020 |
 
 
 #### Effect of different types of target format on accuracy
