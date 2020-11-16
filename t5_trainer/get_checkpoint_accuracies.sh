@@ -18,12 +18,12 @@ echo "Output directory: ${model_output_directory}"
 # Create the results md file or append results at the bottom 
 if [ -f "$FILE" ]; then
     echo "${FILE} exists."
-    echo "|---|---| ---| --- | ---| ---  | --- | --- |"  >> ${FILE}
+    echo "|---|---| ---| --- | ---|"  >> ${FILE}
 else 
     touch ${FILE}
     echo "Created ${FILE}"
     echo "Accuracy| Task  | Checkpoint | TS |" >> ${FILE}
-    echo "|---|---| ---| --- | ---| ---  | --- | --- |"  >> ${FILE}
+    echo "|---|---| ---| --- | ---|"  >> ${FILE}
 fi
 
 
