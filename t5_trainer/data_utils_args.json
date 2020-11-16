@@ -1,12 +1,26 @@
 {
+<<<<<<< HEAD
 	"dataset_name": "commonsense_qa",
 	"tokenizer_name_or_path": "t5-base",
 	"max_len": 128,
 	"target_max_len": 10,
+=======
+	"//dataset_name": "commonsense_qa",
+	"//tokenizer_name_or_path": "t5-base",
+	"//max_len": 128,
+	"//target_max_len": 10,
+    
+	"dataset_name": "cosmos_qa",
+	"tokenizer_name_or_path": "t5-base",
+	"max_len": 345,
+	"target_max_len": 55,
+    
+>>>>>>> 4d491edd14a9ab395699051bd52e88f1db097756
 	"//dataset_name": "social_i_qa",
 	"//tokenizer_name_or_path": "t5-base",
 	"//max_len": 256,
 	"//target_max_len": 16,
+<<<<<<< HEAD
 	"//dataset_name": "common_gen",
 	"//tokenizer_name_or_path": "t5-base",
 	"//max_len": 16,
@@ -15,4 +29,11 @@
 	"//tokenizer_name_or_path": "t5-base",
 	"//max_len": 256,
 	"//target_max_len": 2,
+=======
+    
+	"//dataset_name": "common_gen",
+	"//tokenizer_name_or_path": "t5-base",
+	"//max_len": 16,
+	"//target_max_len": 32
+>>>>>>> 4d491edd14a9ab395699051bd52e88f1db097756
 }

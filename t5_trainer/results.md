@@ -77,7 +77,7 @@ Note: T5-base model fine-tuned for 2 epochs for each run using the target format
 |2              | 8             | 2e-5          | 57.98         |
 |2              | 4             | 1e-4          | 65.35         |
 
-Keeping the batch size at 4 and learning rate at 1e-4, I tried a few differente pochs.
+I tried a few differente pochs.
 
 |Epochs        | Batch size    | Checkpoint    | Learning rate | Accuracy      |
 | -------------| ------------- |:-------------:|:-------------:|:-------------:|
@@ -90,6 +90,7 @@ Keeping the batch size at 4 and learning rate at 1e-4, I tried a few differente 
 |4 (non-stop)  | 8             |2,400          | 1e-4          | 66.63         |
 |4 (non-stop)  | 8             |3,600          | 1e-4          | 66.22         |
 |4 (non-stop)  | 8             |(Final)        | 1e-4          | 66.58         |
+|10(non-stop)  | 8             |(Final)        | 1e-4          | 66.63         |
 
 ## Transfer Learning: Trained on social_i_qa, finetuned on commonsense_qa
 
@@ -108,13 +109,18 @@ Take the T5 model trained on social_i_qa. Fine-tune the model on commonsense_qa 
 |4 (non-stop)  | 4              | 2e-5               | 63.15         | 0                    | 38.82         |
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 0                    | 40.13         |
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 1                    | 58.55         |
-|4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (100 steps)        | 54.14         |
-|4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (300 steps)        | 59.54         |
-|4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (500 steps)        | 61.18         |
-|4 (non-stop)  | 8              | 1e-4               | 66.58         | 2 (final)            | 60.69         |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | (100 steps)          | 54.14         |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | (300 steps)          | 59.54         |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | (500 steps)          | 61.18         |
+|4 (non-stop)  | 8              | 1e-4               | 66.58         | 2                    | 60.69         |
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 3 (non-stop)         | 61.59         |
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 10(non-stop)         | 61.75         |
 |4 (non-stop)  | 8              | 1e-4               | 66.58         | 10(3 then 7)         | 62.82         |
+|10(non-stop)  | 8              | 1e-4               | 66.63         | 3                    | 60.44         |
+|10(non-stop)  | 8              | 1e-4               | 66.63         | (912 steps)          | 60.11         |
+|10(non-stop)  | 8              | 1e-4               | 66.63         | (1,824 steps)        | 60.77         |
+|10(non-stop)  | 8              | 1e-4               | 66.63         | (2,736 steps)        | 61.10         |
+|10(non-stop)  | 8              | 1e-4               | 66.63         | 10(non-stop)         | 61.50         |
 
 ### Warmup Steps
 
@@ -125,6 +131,39 @@ Working on a model trained on social iqa (4 epochs non-stop, batch 8, lr 1e-4)
 | 100           | 1                    | 59.71         |
 | 200           | 3 (out of 3 nonstop) | 62.00         |
 | 1,500         | 10                   | 61.75         |
+
+
+## cosmos_qa dataset
+
+
+|Epochs         | Target Format             | Batch size    | Learning rate | Accuracy      |
+| ------------- | --------------------------| ------------- |:-------------:|:-------------:|
+|3              | B: watch the animals eat  | 8             | 1e-4          | 66.53         |
+
+### transfer learning
+
+Batch size 8
+
+|Cosmos Epochs| Batch size| LR   | Cosmos Accuracy | Commonsense Epochs | Commonsense LR | Commonsense Accuracy | 
+| ------------| --------- |:----:|:---------------:| :-----------------:| :-------------:| :-------------------:|
+|3            | 8         | 1e-4 | 66.53           | 10                 | 1e-4           |  61.43               |
+|3            | 8         | 1e-4 | 66.53           | 10                 | 5e-5           |  62.82               |
+
+Since we achieved a higher accuracy than baseline for commonsense-over-Cosmos, we looked at how this accuracy changed over different checkpoints. Below is the table for finetuning Commonsense QA with LR = 5e-5, batch size 8, for 10 epochs.
+
+Accuracy| Task  | Dir | Checkpoint | TS |
+|---|---| ---| --- | ---|
+| 0.552007| commonsense_qa| cs_on_cosmos|300| Sun Nov 15 23:13:18 PST 2020 |
+| 0.597052| commonsense_qa| cs_on_cosmos|600| Sun Nov 15 23:13:18 PST 2020 |
+| 0.609337| commonsense_qa| cs_on_cosmos|900| Sun Nov 15 23:13:18 PST 2020 |
+| 0.615889| commonsense_qa| cs_on_cosmos|1200| Sun Nov 15 23:13:18 PST 2020 |
+| 0.624079| commonsense_qa| cs_on_cosmos|1500| Sun Nov 15 23:13:18 PST 2020 |
+| 0.628174| commonsense_qa| cs_on_cosmos|1800| Sun Nov 15 23:13:18 PST 2020 |
+| 0.624898| commonsense_qa| cs_on_cosmos|2100| Sun Nov 15 23:13:18 PST 2020 |
+| 0.628993| commonsense_qa| cs_on_cosmos|2400| Sun Nov 15 23:13:18 PST 2020 |
+| 0.630631| commonsense_qa| cs_on_cosmos|2700| Sun Nov 15 23:13:18 PST 2020 |
+| 0.627355| commonsense_qa| cs_on_cosmos|3000| Sun Nov 15 23:13:18 PST 2020 |
+| 0.628174| commonsense_qa| cs_on_cosmos|End of 10 epochs| Sun Nov 15 23:13:18 PST 2020 |
 
 
 #### Effect of different types of target format on accuracy

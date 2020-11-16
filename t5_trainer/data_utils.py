@@ -11,15 +11,12 @@ from transformers import T5Tokenizer
 TRAIN_FILE = 'train_data.pt'
 VAL_FILE = 'valid_data.pt'    
 
-SWAG_TRAIN_FILE = 'train.csv'
-SWAG_VAL_FILE = 'val.csv' 
-
 DATA_DIR = './data'
 
 #SOCIAL_I_QA_LABEL_LOOKUP = {'1':'A', '2':'B', '3':'C'}
 HELLASWAG_LABEL_LOOKUP = {'0':'A', '1':'B', '2':'C', '3':'D'}
 
-DATASET_NAMES = ['commonsense_qa', 'social_i_qa', 'common_gen', 'hellaswag']
+DATASET_NAMES = ['commonsense_qa', 'social_i_qa', 'common_gen', 'cosmos_qa', 'hellaswag']
 
 # Read the arguments from the data_utils_args.json command line file
 arg_file = sys.argv[1] if len(sys.argv) == 2 and sys.argv[1].endswith('.json') else 'data_utils_args.json'
@@ -69,18 +66,32 @@ def format_example_common_gen(example):
 
     return example
 
+def format_example_cosmos_qa(example):
+    option_dict = {   0: '%s: %s' % ('A', example['answer0'])
+                    , 1: '%s: %s' % ('B', example['answer1'])
+                    , 2: '%s: %s' % ('C', example['answer2'])
+                    , 3: '%s: %s' % ('D', example['answer3'])}
+    options = " ".join(option_dict.values())
+
+    example['input_text'] = 'question: %s context: %s options: %s' % (example['question'], example['context'], options)
+
+    label = example['label']
+    example['target_text'] = option_dict[label]
+    
+    return example
+
 # Process the examples in input and target text format for the hellaswag dataset
 # Note that the eos token is added by t5 tokenizer.
 def format_example_hellaswag(example):
     options = ['%s: %s' % (i, option) for i, option in zip(HELLASWAG_LABEL_LOOKUP.values(), example['endings'])]
-    example['input_text'] = 'activity: %s context: %s options: %s' % (example['ctx'], 
+    example['input_text'] = 'activity: %s context: %s options: %s' % (example['ctx'],
                                                                       example['activity_label'],
                                                                       ' '.join(options))
-        
-    #example['target_text'] = '%s: %s' % (HELLASWAG_LABEL_LOOKUP.get(example['label']), 
+
+    #example['target_text'] = '%s: %s' % (HELLASWAG_LABEL_LOOKUP.get(example['label']),
     #                                     example['endings'][int(example['label'])])
     example['target_text'] = '%s' % HELLASWAG_LABEL_LOOKUP.get(example['label'])
-    
+
     return example
 
 # Wrapper format_method to handle the different task(s).
@@ -91,6 +102,8 @@ def format_example(example):
         return format_example_social_i_qa(example)
     elif arguments['dataset_name'] == 'common_gen':
         return format_example_common_gen(example)
+    elif arguments['dataset_name'] == 'cosmos_qa':
+        return format_example_cosmos_qa(example)
     elif arguments['dataset_name'] == 'hellaswag':
         return format_example_hellaswag(example)
         
