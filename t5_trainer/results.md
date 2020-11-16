@@ -151,8 +151,8 @@ Batch size 8
 
 Since we achieved a higher accuracy than baseline for commonsense-over-Cosmos, we looked at how this accuracy changed over different checkpoints. Below is the table for finetuning Commonsense QA with LR = 5e-5, batch size 8, for 10 epochs.
 
-Accuracy| Task  | Dir | Model | TS |
-|---|---| ---| --- | ---| ---  | --- | --- |
+Accuracy| Task  | Dir | Checkpoint | TS |
+|---|---| ---| --- | ---|
 | 0.552007| commonsense_qa| cs_on_cosmos|300| Sun Nov 15 23:13:18 PST 2020 |
 | 0.597052| commonsense_qa| cs_on_cosmos|600| Sun Nov 15 23:13:18 PST 2020 |
 | 0.609337| commonsense_qa| cs_on_cosmos|900| Sun Nov 15 23:13:18 PST 2020 |
