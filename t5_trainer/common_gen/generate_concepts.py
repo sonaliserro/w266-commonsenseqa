@@ -19,7 +19,23 @@ spacy_nlp = spacy.load('en_core_web_lg')
 
 # Generate the question-answer concept sets.
 # We should have 5 concept sets for each question in commonsense_qa
-def generate_concepts(batch_example):    
+def generate_concepts(batch_example):
+    '''
+    Generate concept sets for the commonsense_qa question-choice pairs.
+
+    For example the following commonsense example would generate 5 concept
+    sets as shown below,
+
+    Input:
+    question: John loved to paint houses. How did he usually do it? options: A: clothes get stained B: with brush C: wallpaper D: electrical circuit E: draw
+
+    Output:
+    generate sentence: John loved paint houses clothes get stained
+    generate sentence: John loved paint houses with brush
+    generate sentence: John loved paint houses wallpaper
+    generate sentence: John loved paint houses electrical circuit
+    generate sentence: John loved paint houses draw
+    '''
     concepts = []
     for question, answers in zip(batch_example['question'], batch_example['choices']):
         question_concepts = []        
@@ -35,8 +51,10 @@ def generate_concepts(batch_example):
             
     return {'input_text': concepts}
 
-# Tokenize the examples
 def convert_to_features(example_batch):
+    '''
+    Tokenize the incoming examples (batch) using the initialized tokenizer with the provided arguments for input and target max length(s).
+    '''
     input_encodings = tokenizer.batch_encode_plus(
         example_batch['input_text'], truncation = True, padding = 'max_length', max_length = 16)
     
