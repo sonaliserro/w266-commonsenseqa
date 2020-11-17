@@ -63,6 +63,10 @@ class DataTrainingArguments:
         default = './data',
         metadata={'help': 'Path for train and eval dataset(s)'}
     )
+    do_shuffle: Optional[bool] = field(
+        default = False,
+        metadata={'help': 'Whether to shuffle the train and eval dataset(s)'}
+    )
 
 @dataclass
 class T2TDataCollator:       
@@ -139,8 +143,18 @@ def main():
     )
 
     # Load the train/eval dataset(s)
-    train_dataset = torch.load(os.path.join(data_args.data_dir, data_args.task_name, TRAIN_FILE)) if training_args.do_train else None
-    valid_dataset = torch.load(os.path.join(data_args.data_dir, data_args.task_name, VAL_FILE)) if training_args.do_eval else None
+    train_dataset = None
+    if training_args.do_train:
+        train_dataset = torch.load(os.path.join(data_args.data_dir, data_args.task_name, TRAIN_FILE))
+        if data_args.do_shuffle:
+            train_dataset.shuffle(training_args.seed)
+    
+    valid_dataset = None
+    if training_args.do_eval:
+        valid_dataset = torch.load(os.path.join(data_args.data_dir, data_args.task_name, VAL_FILE))
+        if data_args.do_shuffle:
+            valid_dataset.shuffle(training_args.seed)
+        
     logger.info('Finished loading dataset(s)')
 
     # Initialize the Trainer
