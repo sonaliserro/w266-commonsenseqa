@@ -11,8 +11,12 @@ from transformers import T5Tokenizer
 TRAIN_FILE = 'train_data.pt'
 VAL_FILE = 'valid_data.pt'    
 
+DATA_DIR = './data'
+
 #SOCIAL_I_QA_LABEL_LOOKUP = {'1':'A', '2':'B', '3':'C'}
-DATASET_NAMES = ['commonsense_qa', 'social_i_qa', 'common_gen', 'cosmos_qa']
+HELLASWAG_LABEL_LOOKUP = {'0':'A', '1':'B', '2':'C', '3':'D'}
+
+DATASET_NAMES = ['commonsense_qa', 'social_i_qa', 'common_gen', 'cosmos_qa', 'hellaswag']
 
 # Read the arguments from the data_utils_args.json command line file
 arg_file = sys.argv[1] if len(sys.argv) == 2 and sys.argv[1].endswith('.json') else 'data_utils_args.json'
@@ -26,21 +30,34 @@ if arguments['dataset_name'] not in DATASET_NAMES:
 # Load the tokenizer
 tokenizer = T5Tokenizer.from_pretrained(arguments['tokenizer_name_or_path'])
 
-# Process the examples in input and target text format for the commonsense_qa dataset
-# Note that the eos token is added by t5 tokenizer.
 def format_example_commonsense_qa(example):
+    '''
+    Formats the commonsense_qa example as below,
+    
+    Input
+        question: She was always helping at the senior center, it brought her what? options: A: satisfaction B: heart C: feel better D: pay E: happiness
+     
+    Target        
+        E: happiness
+    '''
     options = ['%s: %s' % (i, option) for i, option in zip(example['choices']['label'], example['choices']['text'])]
     example['input_text'] = 'question: %s  options: %s' % (example['question'], ' '.join(options))
     
     # Use the following format if you want the target to be the string answer, rather than the alphabetical choice
-    example['target_text'] = '%s: %s' % (example['answerKey'], example['choices']['text'][example['choices']['label'].index(example['answerKey'])])
-    #example['target_text'] = '%s' % example['answerKey']
+    #example['target_text'] = '%s: %s' % (example['answerKey'], example['choices']['text'][example['choices']['label'].index(example['answerKey'])])
+    example['target_text'] = '%s' % example['answerKey']
     
     return example
 
-# Process the examples in input and target text format for the social_i_qa dataset
-# Note that the eos token is added by t5 tokenizer.
 def format_example_social_i_qa(example):
+    '''
+    Formats the social_i_qa example as below,
+    
+    Input
+        question: How would you describe Sydney? context: Sydney walked past a homeless woman asking for change but did not have any money they could give to her. Sydney felt bad afterwards. options: A: sympathetic B: like a person who was unable to help C: incredulous
+    Target 
+        A: sympathetic
+    '''
     optionA = '%s: %s' % ('A', example['answerA'])
     optionB = '%s: %s' % ('B', example['answerB'])
     optionC = '%s: %s' % ('C', example['answerC'])
@@ -54,15 +71,31 @@ def format_example_social_i_qa(example):
     
     return example
 
-# Process the examples in input and target text format for the common_gen dataset
-# Note that the eos token is added by t5 tokenizer.
 def format_example_common_gen(example):
+    '''
+    Formats the common_gen example as below,
+    
+    Input
+        generate sentence: ski mountain skier
+    
+    Target
+        A skier is skiing down a mountain.
+    '''
     example['input_text'] = 'generate sentence: %s' % ' '.join(example['concepts'])
     example['target_text'] = '%s' % example['target']
 
     return example
 
 def format_example_cosmos_qa(example):
+    '''    
+    Formats the cosmos_qa example as below,
+    
+    Input
+        question:  What's a possible reason the writer needed someone to dress him every morning? context: It's a very humbling experience when you need someone to dress you every morning, tie your shoes, and put your hair up. Every menial task takes an unprecedented amount of effort. It made me appreciate Dan even more. But anyway I shan't dwell on this (I'm not dying after all) and not let it detract from my lovely 5 days with my friends visiting from Jersey. options: A: The writer doesn't like putting effort into these tasks. B: The writer has a physical disability. C: The writer is bad at doing his own hair. D: None of the above choices.
+        
+    Target
+        B: The writer has a physical disability.    
+    '''
     option_dict = {   0: '%s: %s' % ('A', example['answer0'])
                     , 1: '%s: %s' % ('B', example['answer1'])
                     , 2: '%s: %s' % ('C', example['answer2'])
@@ -76,9 +109,29 @@ def format_example_cosmos_qa(example):
     
     return example
 
+def format_example_hellaswag(example):
+    '''
+    Formats the hellaswag example as below,
+    
+    Input
+        activity: context: A woman is outside with a bucket and a dog. The dog is running around trying to avoid a bath. She options A: rinses the bucket off with soap and blow dry the dog’s head. B: uses a hose to keep it from getting soapy. C: gets the dog wet, then it runs away again. D: gets into a bath tub with the dog.
+       
+    Target
+    '''
+    options = ['%s: %s' % (i, option) for i, option in zip(HELLASWAG_LABEL_LOOKUP.values(), example['endings'])]
+    example['input_text'] = 'activity: %s context: %s options: %s' % (
+        example['activity_label'], example['ctx'], ' '.join(options))
 
-# Wrapper format_method to handle the different task(s).
+    example['target_text'] = '%s: %s' % (HELLASWAG_LABEL_LOOKUP.get(example['label']),
+                                         example['endings'][int(example['label'])])
+    #example['target_text'] = '%s' % HELLASWAG_LABEL_LOOKUP.get(example['label'])
+
+    return example
+
 def format_example(example):
+    '''
+    Forwards the format_example method to the correct implementation for the dataset.
+    '''
     if arguments['dataset_name'] == 'commonsense_qa':
         return format_example_commonsense_qa(example)
     elif arguments['dataset_name'] == 'social_i_qa':
@@ -87,9 +140,13 @@ def format_example(example):
         return format_example_common_gen(example)
     elif arguments['dataset_name'] == 'cosmos_qa':
         return format_example_cosmos_qa(example)
+    elif arguments['dataset_name'] == 'hellaswag':
+        return format_example_hellaswag(example)
         
-# Tokenize the examples, using the supplied padding arguments
 def convert_to_features(example_batch):
+    '''
+    Tokenize the incoming examples (batch) using the initilized tokenizer with the provided arguments for input and target max length(s).
+    '''
     input_encodings = tokenizer.batch_encode_plus(
         example_batch['input_text'], truncation = True, padding = 'max_length', max_length = arguments['max_len'])
     target_encodings = tokenizer.batch_encode_plus(
@@ -104,14 +161,14 @@ def convert_to_features(example_batch):
 
     return encodings
 
-print('Getting data from nlp datasets')
-# Use the following to load only 10% of data for sample efficiency tests
-#train_dataset = nlp.load_dataset(arguments['dataset_name'], split = 'train[:10%]')
-#valid_dataset = nlp.load_dataset(arguments['dataset_name'], split = 'validation[:10%]')
+print('Getting data from huggingface datasets')
+# Use the following to load only a percentage of data for sample efficiency tests
+#train_dataset = load_dataset(arguments['dataset_name'], split = 'train[:5%]')
+#valid_dataset = load_dataset(arguments['dataset_name'], split = 'validation[:100%]')
 
 train_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.TRAIN)
 valid_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.VALIDATION)
-        
+      
 train_dataset = train_dataset.map(format_example, load_from_cache_file = False)
 train_dataset = train_dataset.map(convert_to_features, batched = True, load_from_cache_file = False)
 
@@ -124,7 +181,7 @@ train_dataset.set_format(type='torch', columns = columns)
 valid_dataset.set_format(type='torch', columns = columns)   
 print('Processed {:d} training examples and {:d} validation examples'.format(len(train_dataset), len(valid_dataset)))
 
-data_dir = os.path.join('./data', arguments['dataset_name'])
+data_dir = os.path.join(DATA_DIR, arguments['dataset_name'])
 if not os.path.exists(data_dir): os.makedirs(data_dir)
 print('Saving train and validation files to {}'.format(data_dir))
 torch.save(train_dataset, os.path.join(data_dir, TRAIN_FILE))
