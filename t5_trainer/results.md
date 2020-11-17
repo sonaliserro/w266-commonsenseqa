@@ -27,31 +27,33 @@ Note: T5-base model fine-tuned for 3 epochs for each run using the target format
 
 #### Fine-tuning beyond 3 epochs
 
-Note: T5-base model fine-tuned for each run using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`. Picked up training from the model weights saved from the 3 epoch run.
+Note: T5-base model fine-tuned for each run using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`. 
 
-| Epochs        | Steps         | Accuracy      |
-| ------------- |:-------------:|:-------------:|
-| 3             | 912           | 62.40         |
-| -             | 912+500       | 62.73         |
-| -             | 912+1000      | 62.89         |
-| -             | 912+1500      | 63.06         |
-| -             | 912+2000      | 64.29         |
-| 10            | 2128          | 64.12         |
-| -             | 2128+500      | 61.83         |
-| 13            | 2128+912      | 62.24         |
+Accuracy| Task  | Checkpoint | TS |
+|---|---| ---| --- | 
+| 0.566749| commonsense_qa|300| Tue Nov 17 15:14:11 PST 2020 |
+| 0.610156| commonsense_qa|600| Tue Nov 17 15:14:11 PST 2020 |
+| 0.610156| commonsense_qa|900| Tue Nov 17 15:14:11 PST 2020 |
+| 0.609337| commonsense_qa|1200| Tue Nov 17 15:14:11 PST 2020 |
+| 0.628174| commonsense_qa|1500| Tue Nov 17 15:14:11 PST 2020 |
+| 0.620803| commonsense_qa|1800| Tue Nov 17 15:14:11 PST 2020 |
+| 0.631450| commonsense_qa|2100| Tue Nov 17 15:14:11 PST 2020 |
+| 0.626536| commonsense_qa|2400| Tue Nov 17 15:14:11 PST 2020 |
+| 0.624079| commonsense_qa|2700| Tue Nov 17 15:14:11 PST 2020 |
+| 0.624898| commonsense_qa|3000| Tue Nov 17 15:14:11 PST 2020 |
+| 0.625717| commonsense_qa|10 epochs| Tue Nov 17 15:14:11 PST 2020 |
 
 Note: T5-base model fine-tuned using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`. Non-stop run from T5-base.
 
-| Epochs        | Steps         | Accuracy      |
-| ------------- |:-------------:|:-------------:|
-| -             | 1000          | 62.24         |
-| -             | 2000          | 62.16         |
-| -             | 3000          | 62.89         |
-| -             | 4000          | 61.67         |
-| -             | 5000          | 61.75         |
-| -             | 6000          | 62.32         |
-| 20            | 6088          | 62.24         |
-
+Accuracy| Task  | Checkpoint |
+|---|---| ---|
+| 0.6224| commonsense_qa|1000 |
+| 0.6216| commonsense_qa|2000 |
+| 0.6289| commonsense_qa|3000 |
+| 0.6167| commonsense_qa|4000 |
+| 0.6175| commonsense_qa|5000 |
+| 0.6232| commonsense_qa|6000 |
+| 0.6224| commonsense_qa|20 epochs |
 
 ## social_i_qa dataset
 
@@ -177,5 +179,4 @@ Note: T5-base model fine-tuned for 10 epochs, using the target format `A: bank` 
 | Model              | 20%    | 40%    | 60%    | 80%    | 100%   |
 | -------------------|:------:|:------:|:------:|:------:|:------:|
 | T5-base            | 56.67  | 59.95  | 61.26  | 62.40  | 62.65  |
-| T5-base-common_gen | 53.89  |        |        |        | 61.75  |
 | T5-base-socialiqa  |        |        |        |        |        |
