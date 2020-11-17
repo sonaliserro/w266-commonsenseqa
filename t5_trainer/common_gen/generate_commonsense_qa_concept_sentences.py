@@ -4,8 +4,6 @@ import torch
 import os
 import sys
 
-import spacy
-
 from transformers import T5Tokenizer
 
 TRAIN_FILE = 'train_data.pt'
@@ -17,11 +15,15 @@ VALID_SENTENCES_FILE = '../models/common_gen/3_epochs/predictions_commonsense_qa
 # Load the tokenizer
 tokenizer = T5Tokenizer.from_pretrained('t5-base')
 
-# Read the concept sentences from the provided file
 def get_sentences(file, dataset):
+    '''
+    Read the concept sentences from the provided file.
+
+    Aggregate into groups of 5 sentences per commonsense_qa question.
+    '''
     file = open(file, 'r')
     # Strip trailing newline, period, and lowercase sentence
-    concept_sentences = [line.rstrip('\n.').rstrip('.').lower() for line in file]
+    concept_sentences = [line.rstrip('\n').rstrip('.').lower() for line in file]
     
     # Check that there are 5 sentences per question
     assert(len(dataset) == len(concept_sentences)/5)
@@ -34,6 +36,15 @@ def get_sentences(file, dataset):
     return sentences
     
 def format_example(example, indice, concept_sentences):
+    '''
+    Formats the commonsense_qa example as below,
+
+    Input
+        question: John loved to paint houses. How did he usually do it? options: A: clothes get stained | i loved getting my clothes stained and painted for my house B: with brush | i loved painting houses with a brush C: wallpaper | i loved the idea of painting wallpaper on a house D: electrical circuit | john loved painting electrical circuits in his houses E: draw | i loved the drawing and painting of the houses
+
+    Target
+        B
+    '''
     options = ['%s: %s | %s' % (i, option, sentence) for i, option, sentence in zip(example['choices']['label'], example['choices']['text'], concept_sentences[indice])]
     example['input_text'] = 'question: %s  options: %s' % (example['question'], ' '.join(options))
     
@@ -44,13 +55,21 @@ def format_example(example, indice, concept_sentences):
     return example
 
 def format_example_train(example, indice):
+    '''
+    Pass-through to the format_example method with the training concept sentences
+    '''
     return format_example(example, indice, train_concept_sentences)
 
 def format_example_valid(example, indice):
+    '''
+    Pass-through to the format_example method with the validation concept sentences
+    '''
     return format_example(example, indice, valid_concept_sentences)
 
-# Tokenize the examples
 def convert_to_features(example_batch):
+    '''
+    Tokenize the incoming examples (batch) using the initialized tokenizer with the provided arguments for input and target max length(s).
+    '''
     input_encodings = tokenizer.batch_encode_plus(
         example_batch['input_text'], truncation = True, padding = 'max_length', max_length = 256)
     target_encodings = tokenizer.batch_encode_plus(
@@ -71,6 +90,7 @@ print('Loading commonsense_qa train and valid datasets')
 train_dataset = nlp.load_dataset('commonsense_qa', split = nlp.Split.TRAIN)
 valid_dataset = nlp.load_dataset('commonsense_qa', split = nlp.Split.VALIDATION)
 
+# Load the commonsense_qa concept sentences
 train_concept_sentences = get_sentences(TRAIN_SENTENCES_FILE, train_dataset)
 valid_concept_sentences = get_sentences(VALID_SENTENCES_FILE, valid_dataset)
 
