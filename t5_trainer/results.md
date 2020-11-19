@@ -176,7 +176,8 @@ Accuracy| Task  | Dir | Checkpoint | TS |
 
 Note: T5-base model fine-tuned for 10 epochs, using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`.
 
-| Model              | 20%    | 40%    | 60%    | 80%    | 100%   |
-| -------------------|:------:|:------:|:------:|:------:|:------:|
-| T5-base            | 56.67  | 59.95  | 61.26  | 62.40  | 62.65  |
-| T5-base-socialiqa  |        |        |        |        |        |
+| Model                | 20%    | 40%    | 60%    | 80%    | 100%   | Epochs | LR     | Warmup Steps |
+| -------------------  |:------:|:------:|:------:|:------:|:------:| :-----:| :-----:| :-----------:|
+| T5-base              | 56.67  | 59.95  | 61.26  | 62.40  | 62.65  | 10     | 1e-4   | 0            |
+| T5-base + cosmos_qa  | 57.79  | 56.76  | 60.98  | 61.51  | 62.82  | 10     | 5e-5   | 0            |
+| T5-base + social_i_qa|   |   |   |   | 62.00  |  3     | 5e-5   | 200          |
