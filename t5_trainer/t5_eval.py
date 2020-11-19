@@ -1,9 +1,22 @@
-import logging
+'''
+Utility to evaluate a T5 model using the provided dataset. 
+
+By passing in "--do_eval", the model will evaluate the accuracy of the 
+provided validation dataset. The predictions are compared to the targets 
+and the model accuracy is saved in a file "eval_accuracy.txt" file in the 
+same directory as the model.
+
+By passing in "--do_predict", the model will make predictions for the
+provided test dataset. The predictions are saved in a file "predictions.txt" 
+file in the same directory as the model. 
+'''
 from dataclasses import dataclass, field
 from typing import Optional
 
 import torch
+
 import os
+import sys
 
 from tqdm.auto import tqdm
 
@@ -18,8 +31,6 @@ from transformers import (
 
 from sklearn import metrics
 
-logger = logging.getLogger(__name__)
-
 # Make the logging level as INFO
 transformers.logging.set_verbosity_info()
 
@@ -29,8 +40,8 @@ class EvalArguments:
     model_name_or_path: str = field(
         metadata = {'help': 'Path to pretrained model or model identifier from huggingface.co/models'}
     )
-    valid_file_path: str = field(
-        metadata = {'help': 'Path for cached valid dataset'}
+    file_path: str = field(
+        metadata = {'help': 'Path for dataset to use'}
     )    
     tokenizer_name_or_path: Optional[str] = field(
         default = None, metadata = {'help': 'Pretrained tokenizer name or path if not the same as model_name'}
@@ -39,7 +50,7 @@ class EvalArguments:
         default = 16, metadata = {'help': 'maximum length for decoding'}
     )
     do_eval: Optional[bool] = field(
-        default = True, metadata={'help': 'Whether to run eval on the dev set.'}
+        default = False, metadata={'help': 'Whether to run eval on the dev set.'}
     )
     do_predict: Optional[bool] = field(
         default = False, metadata={'help': 'Whether to run predictions on the test set.'}
@@ -57,9 +68,14 @@ class EvalArguments:
         default = 1.0, metadata={'help': 'Set to values < 1.0 in order to encourage the model to generate shorter sequences.'}
     )
         
-def main():
+def main(args):
     parser = HfArgumentParser((EvalArguments,))
-    args = parser.parse_json_file(json_file = os.path.abspath('eval_args.json'))[0]
+    
+    # Read command-line arguments if present, else read arguments from json file
+    if len(args) >= 2:
+        args = parser.parse_args_into_dataclasses(args = args)[0]
+    else:
+        args = parser.parse_json_file(json_file = os.path.abspath('eval_args.json'))[0]
     
     # Initiliaze the tokenizer and model
     tokenizer = T5Tokenizer.from_pretrained(                
@@ -70,9 +86,9 @@ def main():
     
     device = 'cuda' if torch.cuda.is_available else 'cpu'
 
-    # Load the validation dataset
-    valid_dataset = torch.load(args.valid_file_path)          
-    dataloader = torch.utils.data.DataLoader(valid_dataset, batch_size = 16)
+    # Load the dataset
+    dataset = torch.load(args.file_path)          
+    dataloader = torch.utils.data.DataLoader(dataset, batch_size = 16)
 
     # Evaluate accuracy on the dev set
     if args.do_eval:
@@ -118,13 +134,12 @@ def main():
                     length_penalty = args.length_penalty
                 )
 
-                prediction = [tokenizer.decode(ids, skip_special_tokens=True, clean_up_tokenization_spaces=False) for ids in prediction]
+                prediction = [tokenizer.decode(ids, skip_special_tokens=True, clean_up_tokenization_spaces=True) for ids in prediction]
                 predictions.extend(prediction)
                 
         output_file = os.path.join(args.model_name_or_path, 'predictions.txt')
         with open(output_file, 'w') as writer:
-            writer.write('\n'.join(predictions))          
-            
+            writer.write('\n'.join(predictions))
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])

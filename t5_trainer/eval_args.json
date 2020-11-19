@@ -1,7 +1,7 @@
 {
-	"model_name_or_path": "./models/commonsense_qa/100_percent/checkpoint-3000",
-	"valid_file_path": "./data/commonsense_qa/valid_data.pt",
-	"tokenizer_name_or_path": "./models/commonsense_qa/100_percent/checkpoint-3000",
+	"model_name_or_path": "./models/commonsense_qa/100_percent",
+	"file_path": "./data/commonsense_qa/valid_data.pt",
+	"tokenizer_name_or_path": "./models/commonsense_qa/100_percent",
 	"max_target_length": 10,
 	"do_eval": true,
 	"//do_predict": false,

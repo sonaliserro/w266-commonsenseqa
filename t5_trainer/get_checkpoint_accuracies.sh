@@ -2,9 +2,9 @@
 #!/bin/bash
 
 task="commonsense_qa"
-model_type_directory="cs_on_cosmos"
-model_output_directory="batch_8_lr_5e-5_wu_0_epochs10"
-max_target_length=55
+model_type_directory="swag"
+model_output_directory="commonsense_qa_lr_5e-5"
+max_target_length=10
 
 # setup variables 
 ts=$(TZ=":US/Pacific" date )
@@ -34,7 +34,8 @@ for checkpoint_dir in ${output_dir}/checkpoint*/; do
     echo "{\"model_name_or_path\": \"${checkpoint_dir}\",
             \"valid_file_path\": \"./data/${task}/valid_data.pt\",
             \"tokenizer_name_or_path\": \"${checkpoint_dir}\",
-            \"max_target_length\": ${max_target_length}}" > eval_args.json
+            \"max_target_length\": ${max_target_length},
+            \"do_eval\": true}"> eval_args.json
     python ./t5_eval.py 
 
     accuracy=$(head -1 ${checkpoint_dir}/eval_accuracy.txt | cut -d ' ' -f3)
