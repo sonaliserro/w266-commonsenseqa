@@ -2,8 +2,8 @@
 #!/bin/bash
 
 task="commonsense_qa"
-model_type_directory="swag"
-model_output_directory="commonsense_qa_lr_5e-5"
+model_type_directory="commonsense_qa"
+model_output_directory="10_epochs"
 max_target_length=10
 
 # setup variables 
@@ -32,7 +32,7 @@ for checkpoint_dir in ${output_dir}/checkpoint*/; do
    
     # Evaluate and save accuracy
     echo "{\"model_name_or_path\": \"${checkpoint_dir}\",
-            \"valid_file_path\": \"./data/${task}/valid_data.pt\",
+            \"file_path\": \"./data/${task}/valid_data.pt\",
             \"tokenizer_name_or_path\": \"${checkpoint_dir}\",
             \"max_target_length\": ${max_target_length},
             \"do_eval\": true}"> eval_args.json
