@@ -2,9 +2,9 @@
 #!/bin/bash
 
 task="commonsense_qa"
-model_type_directory="commonsense_qa"
-model_output_directory="10_epochs"
-max_target_length=10
+model_type_directory="commonsense_qa_answerkey"
+model_output_directory="10_epochs_300_steps"
+max_target_length=2
 
 # setup variables 
 ts=$(TZ=":US/Pacific" date )
@@ -27,7 +27,8 @@ else
 fi
 
 
-for checkpoint_dir in ${output_dir}/checkpoint*/; do
+#for checkpoint_dir in ${output_dir}/checkpoint*/; do
+for checkpoint_dir in `ls -d ${output_dir}/checkpoint-* | sort -V`; do
     echo "$checkpoint_dir"
    
     # Evaluate and save accuracy
