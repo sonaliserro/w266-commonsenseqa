@@ -1,3 +1,17 @@
+'''
+Utility to generate concept sets for the commonsense_qa question-answer choice
+pairs. Uses the spaCy language model to extract the nouns, verbs, and pronouns
+from the question and answer text. As an example for the following question-answer
+pair, we would generate the below concept set,
+
+question: John loved to paint houses. How did he usually do it? 
+choice: with brush
+concept set: John loved paint houses with brush
+
+The generated concept sets are then formatted using the t5-base tokenizer
+to produce examples for predicting sentences from a t5 model fine-tuned on
+common_gen.
+'''
 import nlp
 import torch
 
@@ -17,8 +31,6 @@ tokenizer = T5Tokenizer.from_pretrained('t5-base')
 # Load the spaCy language model
 spacy_nlp = spacy.load('en_core_web_lg')
 
-# Generate the question-answer concept sets.
-# We should have 5 concept sets for each question in commonsense_qa
 def generate_concepts(batch_example):
     '''
     Generate concept sets for the commonsense_qa question-choice pairs.

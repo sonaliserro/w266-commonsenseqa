@@ -1,3 +1,13 @@
+'''
+Utility that uses the generated question-answer concept sentences and augments the
+commonsense_qa training and validation datasets. We augment the dataset in the 
+following manner,
+
+question: question options: A: optionA B: optionB C: optionC D: optionD E: optionE
+
+question: question options: A: optionA | sentenceA B: optionB | sentenceB  
+C: optionC | sentenceC D: optionD | sentenceD E: optionE | sentenceE 
+'''
 import nlp
 import torch
 
