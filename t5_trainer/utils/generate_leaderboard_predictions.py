@@ -24,7 +24,7 @@ import json
 
 import t5_eval
 
-MODEL_PATH = '../models/commonsense_qa/100_percent'
+MODEL_PATH = '../models/commonsense_qa/10_epochs'
 DATA_DIR = '../data/commonsense_qa'
 TEST_FILE = 'test_data.pt' 
 LEADERBOARD_FILE = 'predictions_leaderboard.csv'
@@ -102,7 +102,7 @@ question_ids = get_question_ids()
 assert(len(question_ids) == len(test_dataset))
 
 # Write the formatted predictions
-output_file = os.path.join(MODEL_PATH, LEADERBOARD_FILE)
+output_file = os.path.join(LEADERBOARD_FILE)
 with open(output_file, 'w') as writer:
     for question_id, prediction in zip(question_ids, predictions):
         writer.write(','.join([question_id, prediction.split(':')[0]]))
