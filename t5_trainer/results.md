@@ -135,6 +135,25 @@ Working on a model trained on social iqa (4 epochs non-stop, batch 8, lr 1e-4)
 | 1,500         | 10                   | 61.75         |
 
 
+### 10 epochs checkpoints 
+
+Commonsense finetuned (10 epochs, batch size 8, lr 1e-4, wu 0) on top of model trained on Social IQA (4 epochs, batch 8, lr 1e4)
+
+| Checkpoint | Accuracy  |
+|---|---|
+| 300| 0.612613| 
+| 600| 0.615070| 
+| 900| 0.612613| 
+| 1200| 0.609337| 
+| 1500| 0.619984| 
+| 1800| 0.624079| 
+| 2100| 0.622441| 
+| 2400| 0.615070| 
+| 2700| 0.622441| 
+| 3000| 0.622441| 
+
+
+
 ## cosmos_qa dataset
 
 
@@ -176,8 +195,8 @@ Accuracy| Task  | Dir | Checkpoint | TS |
 
 Note: T5-base model fine-tuned for 10 epochs, using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`.
 
-| Model                | 20%    | 40%    | 60%    | 80%    | 100%   | Epochs | LR     | Warmup Steps |
-| -------------------  |:------:|:------:|:------:|:------:|:------:| :-----:| :-----:| :-----------:|
-| T5-base              | 56.67  | 59.95  | 61.26  | 62.40  | 62.65  | 10     | 1e-4   | 0            |
-| T5-base + cosmos_qa  | 57.79  | 56.76  | 60.98  | 61.51  | 62.82  | 10     | 5e-5   | 0            |
-| T5-base + social_i_qa| 54.92  | 61.07  | 59.75  | 61.31  | 62.00  |  3     | 1e-4   | 200          |
+| Model                | 20%    | 40%    | 60%    | 80%    | 100%   | Epochs | LR     | 
+| -------------------  |:------:|:------:|:------:|:------:|:------:| :-----:| :-----:| 
+| T5-base              | 56.67  | 59.95  | 61.26  | 62.40  | 62.65  | 10     | 1e-4   | 
+| T5-base + cosmos_qa  | 56.67  | 59.05  | 61.10  | 62.08  | 62.82  | 10     | 5e-5   | 
+| T5-base + social_i_qa| 57.74  | 59.46  | 60.85  | 60.77  | 62.00  |  10     | 1e-4   | 
