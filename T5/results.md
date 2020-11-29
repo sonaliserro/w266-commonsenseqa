@@ -211,7 +211,6 @@ Accuracy| Task  | Checkpoint | TS |
 | 0.620803| commonsense_qa|cs_on_hellaswag/2400| Wed Nov 25 22:53:08 PST 2020 |
 | 0.619165| commonsense_qa|cs_on_hellaswag/2700| Wed Nov 25 22:53:08 PST 2020 |
 | 0.626536| commonsense_qa|cs_on_hellaswag/3000| Wed Nov 25 22:53:08 PST 2020 |
-| 0.626536| commonsense_qa|cs_on_hellaswag/End of 10 epochs| Wed Nov 25 22:53:08 PST 2020 |
 
 #### Effect of different types of target format on accuracy
 
@@ -226,6 +225,6 @@ Note: T5-base model fine-tuned for 10 epochs, using the target format `A: bank` 
 | T5-base              | 56.67  | 59.95  | 61.26  | 62.40  | 62.65  | 10     | 1e-4   | Sonali |
 | T5-base + cosmos_qa  | 56.67  | 59.05  | 61.10  | 62.08  | 62.82  | 10     | 5e-5   | Haerang|
 | T5-base + cosmos_qa  | 58.39  | 59.70  | 61.26  | 61.91  | 62.82  | 10     | 1e-4   | Sonali|
-| T5-base + social_i_qa| 57.74  | 59.46  | 60.85  | 60.77  | 62.00  |  10    | 1e-4  | Haerang|
-| T5-base + social_i_qa| 58.55  | 60.44  | -  | -  | -  |  10    | 1e-4  | Sonali|
-| T5-base + hellaswag  | 56.42  | 58.06  | 60.85  | 62.24  | 62.  |  10     | 1e-4  | Sonali|
+| T5-base + social_i_qa| 57.74  | 59.46  | 60.85  | 60.77  | 62.00  |  10    | 1e-4   | Haerang|
+| T5-base + social_i_qa| 58.55  | 60.44  | 60.11  | 62.16  | 62.00  |  10    | 1e-4   | Sonali|
+| T5-base + hellaswag  | 56.42  | 58.06  | 60.85  | 62.24  | 62.65  |  10    | 1e-4   | Sonali|
