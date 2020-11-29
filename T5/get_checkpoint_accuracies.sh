@@ -2,9 +2,9 @@
 #!/bin/bash
 
 task="commonsense_qa"
-model_type_directory="commonsense_qa_answerkey"
-model_output_directory="10_epochs_300_steps"
-max_target_length=2
+model_type_directory="hellaswag_qa"
+model_output_directory="commonsense_qa_10_epochs_rerun"
+max_target_length=10
 
 # setup variables 
 ts=$(TZ=":US/Pacific" date )

@@ -199,11 +199,11 @@ def convert_to_features(example_batch):
 
 print('Getting data from huggingface datasets')
 # Use the following to load only a percentage of data for sample efficiency tests
-#train_dataset = nlp.load_dataset(arguments['dataset_name'], split = 'train[:40%]')
-#valid_dataset = nlp.load_dataset(arguments['dataset_name'], split = 'validation[:100%]')
+train_dataset = nlp.load_dataset(arguments['dataset_name'], split = 'train[:60%]')
+valid_dataset = nlp.load_dataset(arguments['dataset_name'], split = 'validation[:100%]')
 
-train_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.TRAIN)
-valid_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.VALIDATION)
+#train_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.TRAIN)
+#valid_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.VALIDATION)
       
 train_dataset = train_dataset.map(format_example, load_from_cache_file = False)
 train_dataset = train_dataset.map(convert_to_features, batched = True, load_from_cache_file = False)

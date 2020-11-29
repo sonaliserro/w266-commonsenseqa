@@ -187,6 +187,32 @@ Accuracy| Task  | Dir | Checkpoint | TS |
 | 0.628174| commonsense_qa| cs_on_cosmos|End of 10 epochs| Sun Nov 15 23:13:18 PST 2020 |
 
 
+
+## hellaswag dataset
+
+
+|Epochs         | Batch size    | Learning rate | Accuracy      |
+| ------------- | ------------- |:-------------:|:-------------:|
+|3              | 4             | 1e-4          | 46.7835       |
+
+### transfer learning
+
+Batch size 8
+
+Accuracy| Task  | Checkpoint | TS |
+|---|---| ---| --- | 
+| 0.577396| commonsense_qa|cs_on_hellaswag/300| Wed Nov 25 22:53:08 PST 2020 |
+| 0.612613| commonsense_qa|cs_on_hellaswag/600| Wed Nov 25 22:53:08 PST 2020 |
+| 0.604423| commonsense_qa|cs_on_hellaswag/900| Wed Nov 25 22:53:08 PST 2020 |
+| 0.619984| commonsense_qa|cs_on_hellaswag/1200| Wed Nov 25 22:53:08 PST 2020 |
+| 0.606061| commonsense_qa|cs_on_hellaswag/1500| Wed Nov 25 22:53:08 PST 2020 |
+| 0.617527| commonsense_qa|cs_on_hellaswag/1800| Wed Nov 25 22:53:08 PST 2020 |
+| 0.610975| commonsense_qa|cs_on_hellaswag/2100| Wed Nov 25 22:53:08 PST 2020 |
+| 0.620803| commonsense_qa|cs_on_hellaswag/2400| Wed Nov 25 22:53:08 PST 2020 |
+| 0.619165| commonsense_qa|cs_on_hellaswag/2700| Wed Nov 25 22:53:08 PST 2020 |
+| 0.626536| commonsense_qa|cs_on_hellaswag/3000| Wed Nov 25 22:53:08 PST 2020 |
+| 0.626536| commonsense_qa|cs_on_hellaswag/End of 10 epochs| Wed Nov 25 22:53:08 PST 2020 |
+
 #### Effect of different types of target format on accuracy
 
 ## Sample Efficiency
@@ -195,8 +221,11 @@ Accuracy| Task  | Dir | Checkpoint | TS |
 
 Note: T5-base model fine-tuned for 10 epochs, using the target format `A: bank` and using `batch_size=8` and `learning_rate=1e-4`.
 
-| Model                | 20%    | 40%    | 60%    | 80%    | 100%   | Epochs | LR     | 
-| -------------------  |:------:|:------:|:------:|:------:|:------:| :-----:| :-----:| 
-| T5-base              | 56.67  | 59.95  | 61.26  | 62.40  | 62.65  | 10     | 1e-4   | 
-| T5-base + cosmos_qa  | 56.67  | 59.05  | 61.10  | 62.08  | 62.82  | 10     | 5e-5   | 
-| T5-base + social_i_qa| 57.74  | 59.46  | 60.85  | 60.77  | 62.00  |  10     | 1e-4   | 
+| Model                | 20%    | 40%    | 60%    | 80%    | 100%   | Epochs | LR     | Run |
+| -------------------  |:------:|:------:|:------:|:------:|:------:| :-----:| :-----:| :--: |
+| T5-base              | 56.67  | 59.95  | 61.26  | 62.40  | 62.65  | 10     | 1e-4   | Sonali |
+| T5-base + cosmos_qa  | 56.67  | 59.05  | 61.10  | 62.08  | 62.82  | 10     | 5e-5   | Haerang|
+| T5-base + cosmos_qa  | 58.39  | 59.70  | 61.26  | 61.91  | 62.82  | 10     | 1e-4   | Sonali|
+| T5-base + social_i_qa| 57.74  | 59.46  | 60.85  | 60.77  | 62.00  |  10    | 1e-4  | Haerang|
+| T5-base + social_i_qa| 57.74  | 59.46  | 60.85  | 60.77  | 62.00  |  10    | 1e-4  | Sonali|
+| T5-base + hellaswag  | 56.42  | 58.06  | 60.85  | 62.24  | 62.  |  10     | 1e-4  | Sonali|
