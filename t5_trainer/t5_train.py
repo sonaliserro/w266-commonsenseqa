@@ -1,4 +1,28 @@
-# Adapted from https://github.com/huggingface/transformers/blob/master/examples/
+'''
+Utility to train a T5 model, based on arguments
+provided in the `training_args.json`, using the following sequence,
+
+1. Load a T5 model and tokenizer either from huggingface or from a 
+local model config or checkpoint.
+
+2. Load the training and validation datasets, and shuffle if requested.
+
+3. Initialize wandb for logging training progress.
+
+4. Initialize the Trainer class. Some of the important arguments for training
+are: per_device_train_batch_size, per_device_eval_batch_size, 
+gradient_accumulation_steps, learning_rate, num_train_epochs, save_steps.
+
+5. Begin training, and Trainer will checkpoint as often as save_steps. 
+After training model config/weights will be saved to specified output directory.
+
+6. It is important to override the T2TDataCollator class to format the targets 
+for the model, and also not calculate loss for the padding tokens 
+(identified as TOKENIZER_PAD_TOKEN_ID)
+
+This script has been adapted from 
+https://github.com/huggingface/transformers/blob/master/examples/multiple-choice/
+'''
 import logging
 import os
 import sys
@@ -70,13 +94,11 @@ class DataTrainingArguments:
 
 @dataclass
 class T2TDataCollator:       
-    # prepares lm_labels from target_ids, returns examples with keys as expected by the forward method
-    # this is necessacry because the trainer directly passes this dict as arguments to the model.
     def __call__(self, batch: List) -> Dict[str, torch.Tensor]:
         '''
-        Take a list of samples from a Dataset and collate them into a batch.
-        Returns:
-            A dictionary of tensors
+        Prepares labels from target_ids, and returns examples with keys as
+        expected by the forward method. This is necessary because the Trainer 
+        directly passes this dict as arguments to the model.
         '''
         input_ids = torch.stack([example['input_ids'] for example in batch])
         labels = torch.stack([example['target_ids'] for example in batch])

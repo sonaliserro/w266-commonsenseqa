@@ -1,3 +1,26 @@
+'''
+Utility to download and format datasets for the T5-base model, using the
+following sequence, based on arguments provided in the `data_utils_args.json`
+file,
+
+1. Download the train and validation dataset(s) from the huggingface 
+datasets library, https://github.com/huggingface/datasets/tree/master/datasets
+
+2. Format each example using the `dataset.map` utility into a T5 compatible 
+text format. For multiple-choice datasets, we use the following format,
+
+Input -> question: question options: A: choiceA B: choiceB C: choiceC
+Target -> A: choiceA
+
+Refer to dataset-specifc methods for exact input/target format.
+
+3. Tokenize each example using the `dataset.map` utility using the T5-base
+tokenizer. Input/Target max length, and truncation/padding features are read
+from the supplied arguments. Input/Target attention masks are included as part
+of each example.
+
+4. Save the resulting files in PyTorch format to disk.
+'''
 import nlp
 import torch
 
@@ -35,7 +58,8 @@ def format_example_commonsense_qa(example):
     Formats the commonsense_qa example as below,
     
     Input
-        question: She was always helping at the senior center, it brought her what? options: A: satisfaction B: heart C: feel better D: pay E: happiness
+        question: She was always helping at the senior center, it brought her what? 
+        options: A: satisfaction B: heart C: feel better D: pay E: happiness
      
     Target        
         E: happiness
@@ -44,8 +68,8 @@ def format_example_commonsense_qa(example):
     example['input_text'] = 'question: %s  options: %s' % (example['question'], ' '.join(options))
     
     # Use the following format if you want the target to be the string answer, rather than the alphabetical choice
-    #example['target_text'] = '%s: %s' % (example['answerKey'], example['choices']['text'][example['choices']['label'].index(example['answerKey'])])
-    example['target_text'] = '%s' % example['answerKey']
+    example['target_text'] = '%s: %s' % (example['answerKey'], example['choices']['text'][example['choices']['label'].index(example['answerKey'])])
+    #example['target_text'] = '%s' % example['answerKey']
     
     return example
 
@@ -54,7 +78,9 @@ def format_example_social_i_qa(example):
     Formats the social_i_qa example as below,
     
     Input
-        question: How would you describe Sydney? context: Sydney walked past a homeless woman asking for change but did not have any money they could give to her. Sydney felt bad afterwards. options: A: sympathetic B: like a person who was unable to help C: incredulous
+        question: How would you describe Sydney? context: Sydney walked past a homeless woman 
+        asking for change but did not have any money they could give to her. Sydney felt bad 
+        afterwards. options: A: sympathetic B: like a person who was unable to help C: incredulous
     Target 
         A: sympathetic
     '''
@@ -91,7 +117,14 @@ def format_example_cosmos_qa(example):
     Formats the cosmos_qa example as below,
     
     Input
-        question:  What's a possible reason the writer needed someone to dress him every morning? context: It's a very humbling experience when you need someone to dress you every morning, tie your shoes, and put your hair up. Every menial task takes an unprecedented amount of effort. It made me appreciate Dan even more. But anyway I shan't dwell on this (I'm not dying after all) and not let it detract from my lovely 5 days with my friends visiting from Jersey. options: A: The writer doesn't like putting effort into these tasks. B: The writer has a physical disability. C: The writer is bad at doing his own hair. D: None of the above choices.
+        question:  What's a possible reason the writer needed someone to dress him every morning? 
+        context: It's a very humbling experience when you need someone to dress you every morning, 
+        tie your shoes, and put your hair up. Every menial task takes an unprecedented amount of effort. 
+        It made me appreciate Dan even more. But anyway I shan't dwell on this (I'm not dying after all) 
+        and not let it detract from my lovely 5 days with my friends visiting from Jersey. 
+        options: A: The writer doesn't like putting effort into these tasks. 
+        B: The writer has a physical disability. 
+        C: The writer is bad at doing his own hair. D: None of the above choices.
         
     Target
         B: The writer has a physical disability.    
@@ -114,17 +147,20 @@ def format_example_hellaswag(example):
     Formats the hellaswag example as below,
     
     Input
-        activity: context: A woman is outside with a bucket and a dog. The dog is running around trying to avoid a bath. She options A: rinses the bucket off with soap and blow dry the dog’s head. B: uses a hose to keep it from getting soapy. C: gets the dog wet, then it runs away again. D: gets into a bath tub with the dog.
+        question: A boy is bent over in his bedroom. He is trying to put on a shoe. he 
+        context: Putting on shoes options: A: sits down, playing with a broken lace. 
+        B: walks down the hall and picks up his shoe. C: then leans over, looks at it, 
+        and throws it to the ground. D: does it over and over again.
        
     Target
+        A: sits down, playing with a broken lace.
     '''
     options = ['%s: %s' % (i, option) for i, option in zip(HELLASWAG_LABEL_LOOKUP.values(), example['endings'])]
-    example['input_text'] = 'activity: %s context: %s options: %s' % (
-        example['activity_label'], example['ctx'], ' '.join(options))
+    example['input_text'] = 'question: %s context: %s options: %s' % (
+        example['ctx'], example['activity_label'], ' '.join(options))
 
     example['target_text'] = '%s: %s' % (HELLASWAG_LABEL_LOOKUP.get(example['label']),
                                          example['endings'][int(example['label'])])
-    #example['target_text'] = '%s' % HELLASWAG_LABEL_LOOKUP.get(example['label'])
 
     return example
 
@@ -163,8 +199,8 @@ def convert_to_features(example_batch):
 
 print('Getting data from huggingface datasets')
 # Use the following to load only a percentage of data for sample efficiency tests
-#train_dataset = load_dataset(arguments['dataset_name'], split = 'train[:5%]')
-#valid_dataset = load_dataset(arguments['dataset_name'], split = 'validation[:100%]')
+#train_dataset = nlp.load_dataset(arguments['dataset_name'], split = 'train[:40%]')
+#valid_dataset = nlp.load_dataset(arguments['dataset_name'], split = 'validation[:100%]')
 
 train_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.TRAIN)
 valid_dataset = nlp.load_dataset(arguments['dataset_name'], split = nlp.Split.VALIDATION)
