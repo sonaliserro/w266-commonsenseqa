@@ -228,6 +228,21 @@ Accuracy| Task  | Checkpoint | TS |
 | 0.628993| commonsense_qa|cs_on_hellaswag/checkpoint-3000| Sun Nov 29 18:15:51 PST 2020 |
 | 0.630631| commonsense_qa|End of 10 epochs | Sun Nov 29 18:15:51 PST 2020 |
 
+Batch size=8, learning rate=1e-4, warmup_steps=200
+
+Accuracy| Task  | Checkpoint | TS |
+|---|---| ---| --- | 
+| 0.561835| commonsense_qa|cs_on_hellaswag/checkpoint-300| Mon Nov 30 13:14:15 PST 2020 |
+| 0.612613| commonsense_qa|cs_on_hellaswag/checkpoint-600| Mon Nov 30 13:14:15 PST 2020 |
+| 0.611794| commonsense_qa|cs_on_hellaswag/checkpoint-900| Mon Nov 30 13:14:15 PST 2020 |
+| 0.628174| commonsense_qa|cs_on_hellaswag/checkpoint-1200| Mon Nov 30 13:14:15 PST 2020 |
+| 0.629812| commonsense_qa|cs_on_hellaswag/checkpoint-1500| Mon Nov 30 13:14:15 PST 2020 |
+| 0.637183| commonsense_qa|cs_on_hellaswag/checkpoint-1800| Mon Nov 30 13:14:15 PST 2020 |
+| 0.623260| commonsense_qa|cs_on_hellaswag/checkpoint-2100| Mon Nov 30 13:14:15 PST 2020 |
+| 0.636364| commonsense_qa|cs_on_hellaswag/checkpoint-2400| Mon Nov 30 13:14:15 PST 2020 |
+| 0.634726| commonsense_qa|cs_on_hellaswag/checkpoint-2700| Mon Nov 30 13:14:15 PST 2020 |
+| 0.640459| commonsense_qa|cs_on_hellaswag/checkpoint-3000| Mon Nov 30 13:14:15 PST 2020 |
+| 0.640459| commonsense_qa|End of 10 epochs| Mon Nov 30 13:14:15 PST 2020 |
 
 ## Sample Efficiency
 
