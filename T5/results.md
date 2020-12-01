@@ -197,7 +197,7 @@ Accuracy| Task  | Dir | Checkpoint | TS |
 
 ### transfer learning
 
-Batch size 8
+Batch size=8, learning rate=1e-4, warmup_steps=0
 
 Accuracy| Task  | Checkpoint | TS |
 |---|---| ---| --- | 
@@ -212,7 +212,37 @@ Accuracy| Task  | Checkpoint | TS |
 | 0.619165| commonsense_qa|cs_on_hellaswag/2700| Wed Nov 25 22:53:08 PST 2020 |
 | 0.626536| commonsense_qa|cs_on_hellaswag/3000| Wed Nov 25 22:53:08 PST 2020 |
 
-#### Effect of different types of target format on accuracy
+Batch size=8, learning rate=1e-4, warmup_steps=150
+
+Accuracy| Task  | Checkpoint | TS |
+|---|---| ---| --- | 
+| 0.564292| commonsense_qa|cs_on_hellaswag/checkpoint-300| Sun Nov 29 18:15:51 PST 2020 |
+| 0.628174| commonsense_qa|cs_on_hellaswag/checkpoint-600| Sun Nov 29 18:15:51 PST 2020 |
+| 0.615070| commonsense_qa|cs_on_hellaswag/checkpoint-900| Sun Nov 29 18:15:51 PST 2020 |
+| 0.627355| commonsense_qa|cs_on_hellaswag/checkpoint-1200| Sun Nov 29 18:15:51 PST 2020 |
+| 0.624898| commonsense_qa|cs_on_hellaswag/checkpoint-1500| Sun Nov 29 18:15:51 PST 2020 |
+| 0.621622| commonsense_qa|cs_on_hellaswag/checkpoint-1800| Sun Nov 29 18:15:51 PST 2020 |
+| 0.624898| commonsense_qa|cs_on_hellaswag/checkpoint-2100| Sun Nov 29 18:15:51 PST 2020 |
+| 0.623260| commonsense_qa|cs_on_hellaswag/checkpoint-2400| Sun Nov 29 18:15:51 PST 2020 |
+| 0.626536| commonsense_qa|cs_on_hellaswag/checkpoint-2700| Sun Nov 29 18:15:51 PST 2020 |
+| 0.628993| commonsense_qa|cs_on_hellaswag/checkpoint-3000| Sun Nov 29 18:15:51 PST 2020 |
+| 0.630631| commonsense_qa|End of 10 epochs | Sun Nov 29 18:15:51 PST 2020 |
+
+Batch size=8, learning rate=1e-4, warmup_steps=200
+
+Accuracy| Task  | Checkpoint | TS |
+|---|---| ---| --- | 
+| 0.561835| commonsense_qa|cs_on_hellaswag/checkpoint-300| Mon Nov 30 13:14:15 PST 2020 |
+| 0.612613| commonsense_qa|cs_on_hellaswag/checkpoint-600| Mon Nov 30 13:14:15 PST 2020 |
+| 0.611794| commonsense_qa|cs_on_hellaswag/checkpoint-900| Mon Nov 30 13:14:15 PST 2020 |
+| 0.628174| commonsense_qa|cs_on_hellaswag/checkpoint-1200| Mon Nov 30 13:14:15 PST 2020 |
+| 0.629812| commonsense_qa|cs_on_hellaswag/checkpoint-1500| Mon Nov 30 13:14:15 PST 2020 |
+| 0.637183| commonsense_qa|cs_on_hellaswag/checkpoint-1800| Mon Nov 30 13:14:15 PST 2020 |
+| 0.623260| commonsense_qa|cs_on_hellaswag/checkpoint-2100| Mon Nov 30 13:14:15 PST 2020 |
+| 0.636364| commonsense_qa|cs_on_hellaswag/checkpoint-2400| Mon Nov 30 13:14:15 PST 2020 |
+| 0.634726| commonsense_qa|cs_on_hellaswag/checkpoint-2700| Mon Nov 30 13:14:15 PST 2020 |
+| 0.640459| commonsense_qa|cs_on_hellaswag/checkpoint-3000| Mon Nov 30 13:14:15 PST 2020 |
+| 0.640459| commonsense_qa|End of 10 epochs| Mon Nov 30 13:14:15 PST 2020 |
 
 ## Sample Efficiency
 
@@ -228,3 +258,4 @@ Note: T5-base model fine-tuned for 10 epochs, using the target format `A: bank` 
 | T5-base + social_i_qa| 57.74  | 59.46  | 60.85  | 60.77  | 62.00  |  10    | 1e-4   | Haerang|
 | T5-base + social_i_qa| 58.55  | 60.44  | 60.11  | 62.16  | 62.00  |  10    | 1e-4   | Sonali|
 | T5-base + hellaswag  | 56.42  | 58.06  | 60.85  | 62.24  | 62.65  |  10    | 1e-4   | Sonali|
+| T5-base + hellaswag  | 56.51  | 58.64  | -  | -  | -  |  10    | 1e-4   | ws=150|
